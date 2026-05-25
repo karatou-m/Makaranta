@@ -20,8 +20,7 @@
     }
     body::before {
       content: ''; position: fixed; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(200,150,62,0.13) 0%, transparent 60%),
+      background: radial-gradient(ellipse 80% 50% at 20% 10%, rgba(200,150,62,0.13) 0%, transparent 60%),
         radial-gradient(ellipse 60% 40% at 80% 90%, rgba(139,58,42,0.08) 0%, transparent 50%);
       pointer-events: none;
     }
@@ -40,12 +39,12 @@
     .card-accent { height: 5px; background: linear-gradient(90deg, var(--rust), var(--gold), var(--sage)); }
     .card-inner { padding: 3rem 3.5rem; }
     .header { text-align: center; margin-bottom: 2.5rem; }
-    .arabic-title { font-size: 1.5rem; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 0.4rem; direction: rtl; }
+    .arabic-title { font-size: 1.5rem; color: var(--gold); margin-bottom: 0.4rem; direction: rtl; }
     .badge {
       display: inline-block; font-size: 0.72rem; font-weight: 500;
       letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
-      border: 1px solid var(--gold-light); padding: 0.3rem 0.9rem; border-radius: 100px;
-      margin-bottom: 0.9rem; background: rgba(200,150,62,0.06);
+      border: 1px solid var(--gold-light); padding: 0.3rem 0.9rem;
+      border-radius: 100px; margin-bottom: 0.9rem; background: rgba(200,150,62,0.06);
     }
     h1 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--ink); line-height: 1.25; margin-bottom: 0.6rem; }
     .subtitle { font-size: 0.92rem; color: #6B6157; line-height: 1.65; }
@@ -150,8 +149,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .submit-error {
       display: none; margin-top: 0.65rem; font-size: 0.8rem; color: var(--rust);
-      text-align: center; padding: 0.4rem 0.7rem;
-      background: rgba(139,58,42,0.06); border-radius: 3px;
+      text-align: center; padding: 0.4rem 0.7rem; background: rgba(139,58,42,0.06); border-radius: 3px;
     }
     .success-view {
       display: none; text-align: center; padding: 3rem 2rem;
@@ -168,11 +166,11 @@
     .form-note { text-align: center; font-size: 0.76rem; color: #9E9286; margin-top: 1.4rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
     @media (max-width: 580px) {
       .card-inner { padding: 1.8rem 1.4rem; }
-      .form-grid  { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
       .field.full { grid-column: 1; }
-      h1          { font-size: 1.65rem; }
+      h1 { font-size: 1.65rem; }
       .level-grid { grid-template-columns: 1fr; }
-      .slot-grid  { grid-template-columns: repeat(2,1fr); }
+      .slot-grid { grid-template-columns: repeat(2,1fr); }
     }
   </style>
 </head>
@@ -336,17 +334,16 @@
 
 <script>
   /* ══════════════════════════════════════
-     CONFIGURATION — à renseigner
+     CONFIGURATION
   ══════════════════════════════════════ */
-  const SUPABASE_URL   = 'https://mssqgelnplvvvuflrrau.supabase.co'; 
-  const SUPABASE_KEY   = 'sb_publishable_LrM2MB_K6-2ocox2ewYOMA_dVSPxaG4';
+  const SUPABASE_URL   = 'https://VOTRE_PROJECT_ID.supabase.co';
+  const SUPABASE_KEY   = 'VOTRE_ANON_KEY';
   const SUPABASE_TABLE = 'inscriptions';
 
-  const EMAILJS_SERVICE_ID  = 'service_jgm1nvl';
+  const EMAILJS_SERVICE_ID  = 'service_4z0afmm';
   const EMAILJS_TEMPLATE_ID = 'template_e24ugve';
   const EMAILJS_PUBLIC_KEY  = 'KPkq8ok3-BYxv41l3';
 
-  /* Init EmailJS */
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
   /* ══════════════════════════════════════
@@ -363,7 +360,7 @@
   }
 
   function chkRequired(wrapId, fieldName) {
-    const el = document.querySelector(`[name="${fieldName}"]`);
+    const el = document.querySelector('[name="' + fieldName + '"]');
     const ok = el && el.value.trim() !== '';
     document.getElementById(wrapId).classList.toggle('has-error', !ok);
     return ok;
@@ -380,8 +377,8 @@
 
   function goStep2() {
     const ok = [
-      chkRequired('f-prenom','prenom'),
-      chkRequired('f-nom','nom'),
+      chkRequired('f-prenom', 'prenom'),
+      chkRequired('f-nom', 'nom'),
       chkEmail('f-email'),
     ].every(Boolean);
     if (!ok) return;
@@ -397,12 +394,9 @@
     const hor = document.querySelector('[name=horaire]:checked');
     document.getElementById('niveau-err').style.display  = niv ? 'none' : 'block';
     document.getElementById('horaire-err').style.display = hor ? 'none' : 'block';
-    const ok = [!!niv, !!hor,
-      chkRequired('f-format','format'),
-    ].every(Boolean);
+    const ok = [!!niv, !!hor, chkRequired('f-format', 'format')].every(Boolean);
     if (!ok) return;
     fd.niveau  = niv.value;
-    fd.cours   = fd.niveau;
     fd.format  = document.querySelector('[name=format]').value;
     fd.horaire = hor.value;
     fd.message = document.querySelector('[name=message]').value.trim();
@@ -412,17 +406,16 @@
 
   function buildRecap() {
     const rows = [
-      ['👤 Nom',     `${fd.prenom} ${fd.nom}`],
+      ['👤 Nom',     fd.prenom + ' ' + fd.nom],
       ['📧 E-mail',  fd.email],
-      ...(fd.tel ? [['📞 Téléphone', fd.tel]] : []),
-      ['🎓 Niveau',  fd.niveau],
-      ['📚 Cours',   fd.cours],
-      ['💻 Format',  fd.format],
-      ['🕐 Horaire', fd.horaire],
-      ...(fd.message ? [['💬 Message', fd.message]] : []),
     ];
+    if (fd.tel) rows.push(['📞 Téléphone', fd.tel]);
+    rows.push(['🎓 Niveau',  fd.niveau]);
+    rows.push(['💻 Format',  fd.format]);
+    rows.push(['🕐 Horaire', fd.horaire]);
+    if (fd.message) rows.push(['💬 Message', fd.message]);
     document.getElementById('recap').innerHTML = rows
-      .map(([l,v]) => `<div class="recap-row"><span class="recap-label">${l} :</span><span>${v}</span></div>`)
+      .map(function(r) { return '<div class="recap-row"><span class="recap-label">' + r[0] + ' :</span><span>' + r[1] + '</span></div>'; })
       .join('');
   }
 
@@ -430,39 +423,42 @@
      SUPABASE
   ══════════════════════════════════════ */
   async function insertToSupabase(payload) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
         'Prefer': 'return=minimal',
       },
       body: JSON.stringify(payload),
     });
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `Erreur HTTP ${res.status}`);
+      const err = await res.json().catch(function() { return {}; });
+      throw new Error(err.message || 'Erreur HTTP ' + res.status);
     }
   }
 
   /* ══════════════════════════════════════
      EMAILJS
   ══════════════════════════════════════ */
-async function sendConfirmationEmail() {
-  await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-    to_email: fd.email,
-    name:     `${fd.prenom} ${fd.nom}`,
-    prenom:   fd.prenom,
-    nom:      fd.nom,
-    email:    fd.email,
-    niveau:   fd.niveau,
-    cours:    fd.cours,
-    format:   fd.format,
-    horaire:  fd.horaire,
-    message:  fd.message || '—',
-  });
-}
+  async function sendConfirmationEmail() {
+    const params = {
+      to_email: fd.email,
+      name:     fd.prenom + ' ' + fd.nom,
+      prenom:   fd.prenom,
+      nom:      fd.nom,
+      email:    fd.email,
+      niveau:   fd.niveau,
+      format:   fd.format,
+      horaire:  fd.horaire,
+      message:  fd.message || '—',
+    };
+    const result = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+    if (result.status !== 200) {
+      throw new Error('EmailJS: ' + result.text);
+    }
+  }
 
   /* ══════════════════════════════════════
      SOUMISSION
@@ -487,9 +483,8 @@ async function sendConfirmationEmail() {
       prenom:     fd.prenom,
       nom:        fd.nom,
       email:      fd.email,
-      telephone:  fd.tel    || null,
+      telephone:  fd.tel || null,
       niveau:     fd.niveau,
-      cours:      fd.cours,
       format:     fd.format,
       horaire:    fd.horaire,
       message:    fd.message || null,
@@ -498,15 +493,12 @@ async function sendConfirmationEmail() {
     };
 
     try {
-      /* 1. Sauvegarde Supabase */
       await insertToSupabase(payload);
-      /* 2. Email de confirmation */
       await sendConfirmationEmail();
-      /* 3. Succès */
       document.getElementById('formView').style.display    = 'none';
       document.getElementById('successView').style.display = 'block';
     } catch(err) {
-      errBox.textContent   = `❌ Erreur : ${err.message}`;
+      errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
       errBox.style.display = 'block';
       btn.disabled = false;
       lbl.textContent = '✓ Confirmer mon inscription';
