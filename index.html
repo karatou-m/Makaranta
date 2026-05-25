@@ -442,8 +442,8 @@
   /* ══════════════════════════════════════
      EMAILJS
   ══════════════════════════════════════ */
-  async function sendConfirmationEmail() {
-    const params = {
+async function sendConfirmationEmail() {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       to_email: fd.email,
       name:     fd.prenom + ' ' + fd.nom,
       prenom:   fd.prenom,
@@ -453,12 +453,9 @@
       format:   fd.format,
       horaire:  fd.horaire,
       message:  fd.message || '—',
-    };
-    const result = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-    if (result.status !== 200) {
-      throw new Error('EmailJS: ' + result.text);
-    }
+    });
   }
+
 
   /* ══════════════════════════════════════
      SOUMISSION
