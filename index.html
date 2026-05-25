@@ -486,7 +486,7 @@
 
     insertToSupabase(payload)
       .then(function() {
-        sendConfirmationEmail().catch(function() {});
+        sendConfirmationEmail().catch(function(err) { console.log('EmailJS erreur:', err); });
         document.getElementById('formView').style.display    = 'none';
         document.getElementById('successView').style.display = 'block';
       })
