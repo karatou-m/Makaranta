@@ -397,6 +397,7 @@
     const ok = [!!niv, !!hor, chkRequired('f-format', 'format')].every(Boolean);
     if (!ok) return;
     fd.niveau  = niv.value;
+    fd.cours   = niv.value;
     fd.format  = document.querySelector('[name=format]').value;
     fd.horaire = hor.value;
     fd.message = document.querySelector('[name=message]').value.trim();
@@ -483,7 +484,7 @@ async function sendConfirmationEmail() {
       email:      fd.email,
       telephone:  fd.tel || null,
       niveau:     fd.niveau,
-      cours:      fd.niveau,
+      cours:      fd.cours,
       format:     fd.format,
       horaire:    fd.horaire,
       message:    fd.message || null,
