@@ -449,16 +449,17 @@
   /* ══════════════════════════════════════
      EMAILJS
   ══════════════════════════════════════ */
-  async function sendConfirmationEmail() {
+async function sendConfirmationEmail() {
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      prenom:  fd.prenom,
-      nom:     fd.nom,
-      email:   fd.email,
-      niveau:  fd.niveau,
-      cours:   fd.cours,
-      format:  fd.format,
-      horaire: fd.horaire,
-      message: fd.message || '—',
+      to_email: fd.email,
+      prenom:   fd.prenom,
+      nom:      fd.nom,
+      email:    fd.email,
+      niveau:   fd.niveau,
+      cours:    fd.cours,
+      format:   fd.format,
+      horaire:  fd.horaire,
+      message:  fd.message || '—',
     });
   }
 
