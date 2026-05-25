@@ -450,18 +450,19 @@
      EMAILJS
   ══════════════════════════════════════ */
 async function sendConfirmationEmail() {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_email: fd.email,
-      prenom:   fd.prenom,
-      nom:      fd.nom,
-      email:    fd.email,
-      niveau:   fd.niveau,
-      cours:    fd.cours,
-      format:   fd.format,
-      horaire:  fd.horaire,
-      message:  fd.message || '—',
-    });
-  }
+  await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    to_email: fd.email,
+    name:     `${fd.prenom} ${fd.nom}`,
+    prenom:   fd.prenom,
+    nom:      fd.nom,
+    email:    fd.email,
+    niveau:   fd.niveau,
+    cours:    fd.cours,
+    format:   fd.format,
+    horaire:  fd.horaire,
+    message:  fd.message || '—',
+  });
+}
 
   /* ══════════════════════════════════════
      SOUMISSION
