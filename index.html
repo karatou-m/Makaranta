@@ -195,12 +195,12 @@
 
       <form id="regForm" novalidate>
 
-        <!-- Étape 1 -->
+        <!-- Etape 1 -->
         <div id="step1">
           <div class="divider"><span>Informations personnelles</span></div>
           <div class="form-grid">
             <div class="field" id="f-prenom">
-              <label class="field-label">Prénom <span>*</span></label>
+              <label class="field-label">Prenom <span>*</span></label>
               <input type="text" name="prenom" placeholder="ex. Yasmine" />
               <span class="error-msg">Ce champ est requis.</span>
             </div>
@@ -215,70 +215,70 @@
               <span class="error-msg">Veuillez entrer un e-mail valide.</span>
             </div>
             <div class="field full">
-              <label class="field-label">Téléphone (optionnel)</label>
+              <label class="field-label">Telephone (optionnel)</label>
               <input type="tel" name="tel" placeholder="+33 6 00 00 00 00" />
             </div>
           </div>
-          <button type="button" class="btn-primary" onclick="goStep2()">Continuer →</button>
+          <button type="button" class="btn-primary" onclick="goStep2()">Continuer</button>
         </div>
 
-        <!-- Étape 2 -->
+        <!-- Etape 2 -->
         <div id="step2" style="display:none">
           <div class="divider"><span>Niveau d'apprentissage</span></div>
           <div class="level-grid">
             <label class="level-card">
-              <input type="radio" name="niveau" value="Débutant" />
-              <span class="level-name">Débutant</span>
+              <input type="radio" name="niveau" value="Debutant" />
+              <span class="level-name">Debutant</span>
             </label>
             <label class="level-card">
-              <input type="radio" name="niveau" value="Intermédiaire" />
-              <span class="level-name">Intermédiaire</span>
+              <input type="radio" name="niveau" value="Intermediaire" />
+              <span class="level-name">Intermediaire</span>
             </label>
             <label class="level-card">
-              <input type="radio" name="niveau" value="Avancé" />
-              <span class="level-name">Avancé</span>
+              <input type="radio" name="niveau" value="Avance" />
+              <span class="level-name">Avance</span>
             </label>
           </div>
-          <span class="error-msg" id="niveau-err" style="display:none;margin-top:0.3rem">Veuillez sélectionner votre niveau.</span>
+          <span class="error-msg" id="niveau-err" style="display:none;margin-top:0.3rem">Veuillez selectionner votre niveau.</span>
 
           <div class="divider" style="margin-top:1.8rem"><span>Format du cours</span></div>
           <div class="form-grid">
             <div class="field full" id="f-format">
               <label class="field-label">Format <span>*</span></label>
               <select name="format">
-                <option value="">— Sélectionner —</option>
-                <option value="En ligne — Session individuelle (1:1)">En ligne — Session individuelle (1:1)</option>
-                <option value="En ligne — Groupe (max 5 apprenants)">En ligne — Groupe (max 5 apprenants)</option>
-                <option value="Enregistrements — À son propre rythme">Enregistrements — À son propre rythme</option>
+                <option value="">-- Selectionner --</option>
+                <option value="En ligne - Session individuelle">En ligne - Session individuelle (1:1)</option>
+                <option value="En ligne - Groupe max 5">En ligne - Groupe (max 5 apprenants)</option>
+                <option value="Enregistrements - A son propre rythme">Enregistrements - A son propre rythme</option>
               </select>
-              <span class="error-msg">Veuillez sélectionner un format.</span>
+              <span class="error-msg">Veuillez selectionner un format.</span>
             </div>
           </div>
 
-          <div class="divider" style="margin-top:1.8rem"><span>Créneau horaire préféré</span></div>
+          <div class="divider" style="margin-top:1.8rem"><span>Creneau horaire prefere</span></div>
           <div class="slot-grid">
-            <label class="slot-btn"><input type="radio" name="horaire" value="Lundi — 18h à 20h" /><span class="slot-day">Lundi</span><span class="slot-time">18h – 20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Mardi — 18h à 20h" /><span class="slot-day">Mardi</span><span class="slot-time">18h – 20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Mercredi — 18h à 20h" /><span class="slot-day">Mercredi</span><span class="slot-time">18h – 20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Jeudi — 18h à 20h" /><span class="slot-day">Jeudi</span><span class="slot-time">18h – 20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Vendredi — 18h à 20h" /><span class="slot-day">Vendredi</span><span class="slot-time">18h – 20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Samedi — 9h à 11h" /><span class="slot-day">Samedi</span><span class="slot-time">9h – 11h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Dimanche — 15h à 17h" /><span class="slot-day">Dimanche</span><span class="slot-time">15h – 17h</span></label>
+            <label class="slot-btn"><input type="radio" name="horaire" value="Lundi 18h-20h" /><span class="slot-day">Lundi</span><span class="slot-time">18h-20h</span></label>
+            <label class="slot-btn"><input type="radio" name="horaire" value="Mardi 18h-20h" /><span class="slot-day">Mardi</span><span class="slot-time">18h-20h</span></label>
+            <label class="slot-btn"><input type="radio" name="horaire" value="Mercredi 18h-20h" /><span class="slot-day">Mercredi</span><span class="slot-time">18h-20h</span></label>
+            <label class="slot-btn"><input type="radio" name="horaire" value="Jeudi 18h-20h" /><span class="slot-day">Jeudi</span><span class="slot-time">18h-20h</span></label>
+            <label class="slot-btn"><input type="radio" name="horaire" value="Vendredi 18h-20h" /><span class="slot-day">Vendredi</span><span class="slot-time">18h-20h</span></label>
+            <label class="slot-btn"><input type="radio" name="horaire" value="Samedi 9h-11h" /><span class="slot-day">Samedi</span><span class="slot-time">9h-11h</span></label>
+            <label class="slot-btn"><input type="radio" name="horaire" value="Dimanche 15h-17h" /><span class="slot-day">Dimanche</span><span class="slot-time">15h-17h</span></label>
           </div>
-          <span class="error-msg" id="horaire-err" style="display:none;margin-top:0.3rem">Veuillez choisir un créneau horaire.</span>
+          <span class="error-msg" id="horaire-err" style="display:none;margin-top:0.3rem">Veuillez choisir un creneau horaire.</span>
 
           <div style="margin-top:1.5rem">
             <label class="field-label">Message ou questions (optionnel)</label>
-            <textarea name="message" style="margin-top:0.45rem" placeholder="Partagez vos objectifs, contraintes ou toute information utile pour l'enseignant…"></textarea>
+            <textarea name="message" style="margin-top:0.45rem" placeholder="Partagez vos objectifs ou toute information utile..."></textarea>
           </div>
 
-          <button type="button" class="btn-primary" onclick="goStep3()">Continuer →</button>
-          <button type="button" class="btn-ghost" onclick="goStep1()">← Retour</button>
+          <button type="button" class="btn-primary" onclick="goStep3()">Continuer</button>
+          <button type="button" class="btn-ghost" onclick="goStep1()">Retour</button>
         </div>
 
-        <!-- Étape 3 -->
+        <!-- Etape 3 -->
         <div id="step3" style="display:none">
-          <div class="divider"><span>Récapitulatif de votre inscription</span></div>
+          <div class="divider"><span>Recapitulatif de votre inscription</span></div>
           <div class="recap-box" id="recap"></div>
 
           <label class="check-row">
@@ -288,7 +288,7 @@
                 <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
-            <span class="check-text">J'accepte les <a href="#">conditions générales</a> et la <a href="#">politique de confidentialité</a>.<span style="color:var(--rust)"> *</span></span>
+            <span class="check-text">J'accepte les <a href="#">conditions generales</a> et la <a href="#">politique de confidentialite</a>.<span style="color:var(--rust)"> *</span></span>
           </label>
           <span class="error-msg" id="cgv-err" style="display:none;margin-left:1.6rem">Vous devez accepter les conditions.</span>
 
@@ -299,19 +299,19 @@
                 <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
-            <span class="check-text">Je souhaite recevoir les actualités et offres spéciales par e-mail.</span>
+            <span class="check-text">Je souhaite recevoir les actualites et offres speciales par e-mail.</span>
           </label>
 
           <button type="submit" class="btn-primary" id="btnSubmit">
-            <span id="btnLabel">✓ Confirmer mon inscription</span>
+            <span id="btnLabel">Confirmer mon inscription</span>
             <div class="spinner" id="spinner"></div>
           </button>
           <div class="submit-error" id="submitError"></div>
-          <button type="button" class="btn-ghost" onclick="goStep2()">← Retour</button>
+          <button type="button" class="btn-ghost" onclick="goStep2()">Retour</button>
         </div>
 
       </form>
-      <p class="form-note">🔒 Vos données sont sécurisées et ne sont jamais partagées avec des tiers.</p>
+      <p class="form-note">Vos donnees sont securisees et ne sont jamais partagees avec des tiers.</p>
     </div>
 
     <div class="success-view" id="successView">
@@ -322,9 +322,9 @@
       </div>
       <h2>Barak Allahu Fik !</h2>
       <div class="success-arabic">بَارَكَ اللَّهُ فِيكَ</div>
-      <p>Votre inscription a bien été enregistrée.<br>
-      Un e-mail de confirmation vous a été envoyé.<br><br>
-      <strong style="color:var(--ink)">Que Allah facilite votre apprentissage. ✦</strong></p>
+      <p>Votre inscription a bien ete enregistree.<br>
+      Un e-mail de confirmation vous a ete envoye.<br><br>
+      <strong style="color:var(--ink)">Que Allah facilite votre apprentissage.</strong></p>
       <br>
       <button class="btn-ghost" style="max-width:240px;margin:0 auto" onclick="resetForm()">Nouvelle inscription</button>
     </div>
@@ -333,42 +333,39 @@
 </div>
 
 <script>
-  /* ══════════════════════════════════════
-     CONFIGURATION
-  ══════════════════════════════════════ */
-  const SUPABASE_URL   = 'https://mssqgelnplvvvuflrrau.supabase.co'; 
-  const SUPABASE_KEY   = 'sb_publishable_LrM2MB_K6-2ocox2ewYOMA_dVSPxaG4';
-  const SUPABASE_TABLE = 'inscriptions';
+  /* == CONFIGURATION — remplacer avant de mettre en ligne == */
+  var SUPABASE_URL   = 'https://VOTRE_PROJECT_ID.supabase.co';
+  var SUPABASE_KEY   = 'VOTRE_ANON_KEY';
+  var SUPABASE_TABLE = 'inscriptions';
 
-  const EMAILJS_SERVICE_ID  = 'service_4z0afmm';
-  const EMAILJS_TEMPLATE_ID = 'template_e24ugve';
-  const EMAILJS_PUBLIC_KEY  = 'KPkq8ok3-BYxv41l3';
+  var EMAILJS_SERVICE_ID  = 'service_4z0afmm';
+  var EMAILJS_TEMPLATE_ID = 'template_e24ugve';
+  var EMAILJS_PUBLIC_KEY  = 'KPkq8ok3-BYxv41l3';
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  /* ══════════════════════════════════════
-     NAVIGATION
-  ══════════════════════════════════════ */
-  const fd = {};
+  /* == DONNEES DU FORMULAIRE == */
+  var fd = {};
 
+  /* == NAVIGATION == */
   function setStep(n) {
-    [1,2,3].forEach(i => {
-      document.getElementById('step'+i).style.display = (i===n) ? '' : 'none';
-      document.getElementById('dot'+i).classList.toggle('active', i<=n);
-    });
+    for (var i = 1; i <= 3; i++) {
+      document.getElementById('step' + i).style.display = (i === n) ? '' : 'none';
+      document.getElementById('dot' + i).classList.toggle('active', i <= n);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function chkRequired(wrapId, fieldName) {
-    const el = document.querySelector('[name="' + fieldName + '"]');
-    const ok = el && el.value.trim() !== '';
+    var el = document.querySelector('[name="' + fieldName + '"]');
+    var ok = el && el.value.trim() !== '';
     document.getElementById(wrapId).classList.toggle('has-error', !ok);
     return ok;
   }
 
   function chkEmail(wrapId) {
-    const v = document.querySelector('[name="email"]').value.trim();
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    var v = document.querySelector('[name="email"]').value.trim();
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     document.getElementById(wrapId).classList.toggle('has-error', !ok);
     return ok;
   }
@@ -376,11 +373,9 @@
   function goStep1() { setStep(1); }
 
   function goStep2() {
-    const ok = [
-      chkRequired('f-prenom', 'prenom'),
-      chkRequired('f-nom', 'nom'),
-      chkEmail('f-email'),
-    ].every(Boolean);
+    var ok = chkRequired('f-prenom', 'prenom') &
+             chkRequired('f-nom', 'nom') &
+             chkEmail('f-email');
     if (!ok) return;
     fd.prenom = document.querySelector('[name=prenom]').value.trim();
     fd.nom    = document.querySelector('[name=nom]').value.trim();
@@ -390,12 +385,12 @@
   }
 
   function goStep3() {
-    const niv = document.querySelector('[name=niveau]:checked');
-    const hor = document.querySelector('[name=horaire]:checked');
+    var niv = document.querySelector('[name=niveau]:checked');
+    var hor = document.querySelector('[name=horaire]:checked');
+    var fmt = chkRequired('f-format', 'format');
     document.getElementById('niveau-err').style.display  = niv ? 'none' : 'block';
     document.getElementById('horaire-err').style.display = hor ? 'none' : 'block';
-    const ok = [!!niv, !!hor, chkRequired('f-format', 'format')].every(Boolean);
-    if (!ok) return;
+    if (!niv || !hor || !fmt) return;
     fd.niveau  = niv.value;
     fd.cours   = niv.value;
     fd.format  = document.querySelector('[name=format]').value;
@@ -406,107 +401,103 @@
   }
 
   function buildRecap() {
-    const rows = [
-      ['👤 Nom',     fd.prenom + ' ' + fd.nom],
-      ['📧 E-mail',  fd.email],
+    var rows = [
+      ['Nom',     fd.prenom + ' ' + fd.nom],
+      ['E-mail',  fd.email],
+      ['Niveau',  fd.niveau],
+      ['Format',  fd.format],
+      ['Horaire', fd.horaire],
     ];
-    if (fd.tel) rows.push(['📞 Téléphone', fd.tel]);
-    rows.push(['🎓 Niveau',  fd.niveau]);
-    rows.push(['💻 Format',  fd.format]);
-    rows.push(['🕐 Horaire', fd.horaire]);
-    if (fd.message) rows.push(['💬 Message', fd.message]);
+    if (fd.tel)     rows.splice(2, 0, ['Telephone', fd.tel]);
+    if (fd.message) rows.push(['Message', fd.message]);
     document.getElementById('recap').innerHTML = rows
-      .map(function(r) { return '<div class="recap-row"><span class="recap-label">' + r[0] + ' :</span><span>' + r[1] + '</span></div>'; })
-      .join('');
+      .map(function(r) {
+        return '<div class="recap-row"><span class="recap-label">' + r[0] + ' :</span><span>' + r[1] + '</span></div>';
+      }).join('');
   }
 
-  /* ══════════════════════════════════════
-     SUPABASE
-  ══════════════════════════════════════ */
-  async function insertToSupabase(payload) {
-    const res = await fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
+  /* == SUPABASE == */
+  function insertToSupabase(payload) {
+    return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal',
+        'Prefer': 'return=minimal'
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
+    }).then(function(res) {
+      if (!res.ok) {
+        return res.json().then(function(e) { throw new Error(e.message || 'Erreur Supabase'); });
+      }
     });
-    if (!res.ok) {
-      const err = await res.json().catch(function() { return {}; });
-      throw new Error(err.message || 'Erreur HTTP ' + res.status);
-    }
   }
 
-  /* ══════════════════════════════════════
-     EMAILJS
-  ══════════════════════════════════════ */
-async function sendConfirmationEmail() {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+  /* == EMAILJS == */
+  function sendConfirmationEmail() {
+    return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       to_email: fd.email,
       name:     fd.prenom + ' ' + fd.nom,
       prenom:   fd.prenom,
       nom:      fd.nom,
       email:    fd.email,
       niveau:   fd.niveau,
-      cours:    fd.niveau,
+      cours:    fd.cours,
       format:   fd.format,
       horaire:  fd.horaire,
-      message:  fd.message || '—',
+      message:  fd.message || '-'
     });
   }
 
-
-  /* ══════════════════════════════════════
-     SOUMISSION
-  ══════════════════════════════════════ */
-  document.getElementById('regForm').addEventListener('submit', async function(e) {
+  /* == SOUMISSION == */
+  document.getElementById('regForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const cgvErr = document.getElementById('cgv-err');
-    if (!document.getElementById('cgv').checked) { cgvErr.style.display = 'block'; return; }
+    var cgvErr = document.getElementById('cgv-err');
+    if (!document.getElementById('cgv').checked) {
+      cgvErr.style.display = 'block';
+      return;
+    }
     cgvErr.style.display = 'none';
 
-    const btn     = document.getElementById('btnSubmit');
-    const lbl     = document.getElementById('btnLabel');
-    const spinner = document.getElementById('spinner');
-    const errBox  = document.getElementById('submitError');
+    var btn     = document.getElementById('btnSubmit');
+    var lbl     = document.getElementById('btnLabel');
+    var spinner = document.getElementById('spinner');
+    var errBox  = document.getElementById('submitError');
 
-    btn.disabled = true;
-    lbl.textContent = 'Enregistrement en cours…';
+    btn.disabled          = true;
+    lbl.textContent       = 'Enregistrement en cours...';
     spinner.style.display = 'block';
     errBox.style.display  = 'none';
 
-    const payload = {
+    var payload = {
       prenom:     fd.prenom,
       nom:        fd.nom,
       email:      fd.email,
       telephone:  fd.tel || null,
       niveau:     fd.niveau,
-      cours:      fd.niveau,
+      cours:      fd.cours,
       format:     fd.format,
       horaire:    fd.horaire,
       message:    fd.message || null,
       newsletter: document.getElementById('newsletter').checked,
-      inscrit_le: new Date().toISOString(),
+      inscrit_le: new Date().toISOString()
     };
 
-try {
-  await insertToSupabase(payload);
-} catch(err) {
-  errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
-  errBox.style.display = 'block';
-  btn.disabled = false;
-  lbl.textContent = '✓ Confirmer mon inscription';
-  spinner.style.display = 'none';
-  return;
-}
-// Email en arrière-plan — n'empêche pas le succès
-sendConfirmationEmail().catch(function() {});
-document.getElementById('formView').style.display    = 'none';
-document.getElementById('successView').style.display = 'block';
-
+    insertToSupabase(payload)
+      .then(function() {
+        sendConfirmationEmail().catch(function() {});
+        document.getElementById('formView').style.display    = 'none';
+        document.getElementById('successView').style.display = 'block';
+      })
+      .catch(function(err) {
+        errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
+        errBox.style.display = 'block';
+        btn.disabled          = false;
+        lbl.textContent       = 'Confirmer mon inscription';
+        spinner.style.display = 'none';
+      });
+  });
 
   function resetForm() {
     document.getElementById('regForm').reset();
