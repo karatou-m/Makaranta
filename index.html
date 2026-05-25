@@ -489,19 +489,21 @@ async function sendConfirmationEmail() {
       inscrit_le: new Date().toISOString(),
     };
 
-    try {
-      await insertToSupabase(payload);
-      await sendConfirmationEmail();
-      document.getElementById('formView').style.display    = 'none';
-      document.getElementById('successView').style.display = 'block';
-    } catch(err) {
-      errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
-      errBox.style.display = 'block';
-      btn.disabled = false;
-      lbl.textContent = '✓ Confirmer mon inscription';
-      spinner.style.display = 'none';
-    }
-  });
+try {
+  await insertToSupabase(payload);
+} catch(err) {
+  errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
+  errBox.style.display = 'block';
+  btn.disabled = false;
+  lbl.textContent = '✓ Confirmer mon inscription';
+  spinner.style.display = 'none';
+  return;
+}
+// Email en arrière-plan — n'empêche pas le succès
+sendConfirmationEmail().catch(function() {});
+document.getElementById('formView').style.display    = 'none';
+document.getElementById('successView').style.display = 'block';
+
 
   function resetForm() {
     document.getElementById('regForm').reset();
