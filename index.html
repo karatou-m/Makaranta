@@ -5,27 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inscription — Cours Tajwid & Lecture du Coran</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --cream: #F5F0E8;
-      --ink: #1A1612;
-      --gold: #C8963E;
-      --gold-light: #E8B86D;
-      --rust: #8B3A2A;
-      --sage: #4A6741;
-      --paper: #FAF7F2;
-      --border: #D8CFC0;
+      --cream: #F5F0E8; --ink: #1A1612; --gold: #C8963E;
+      --gold-light: #E8B86D; --rust: #8B3A2A; --sage: #4A6741;
+      --paper: #FAF7F2; --border: #D8CFC0;
     }
-
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 2rem 1rem;
-      position: relative; overflow-x: hidden;
+      font-family: 'DM Sans', sans-serif; background: var(--cream);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 2rem 1rem; position: relative; overflow-x: hidden;
     }
     body::before {
       content: ''; position: fixed; inset: 0;
@@ -35,48 +26,35 @@
       pointer-events: none;
     }
     body::after {
-      content: ''; position: fixed; top: 0; right: 0;
-      width: 320px; height: 320px;
+      content: ''; position: fixed; top: 0; right: 0; width: 320px; height: 320px;
       background-image: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(200,150,62,0.07) 18px, rgba(200,150,62,0.07) 19px);
       pointer-events: none;
     }
-
-    /* ── Card ── */
     .card {
-      background: var(--paper); border: 1px solid var(--border);
-      border-radius: 4px; width: 100%; max-width: 700px;
+      background: var(--paper); border: 1px solid var(--border); border-radius: 4px;
+      width: 100%; max-width: 700px;
       box-shadow: 0 8px 48px rgba(26,22,18,0.12), 0 2px 8px rgba(26,22,18,0.06);
-      overflow: hidden;
-      animation: rise 0.7s cubic-bezier(0.22,1,0.36,1) both;
+      overflow: hidden; animation: rise 0.7s cubic-bezier(0.22,1,0.36,1) both;
     }
     @keyframes rise { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
     .card-accent { height: 5px; background: linear-gradient(90deg, var(--rust), var(--gold), var(--sage)); }
     .card-inner { padding: 3rem 3.5rem; }
-
-    /* ── Header ── */
     .header { text-align: center; margin-bottom: 2.5rem; }
     .arabic-title { font-size: 1.5rem; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 0.4rem; direction: rtl; }
     .badge {
       display: inline-block; font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--gold); border: 1px solid var(--gold-light);
-      padding: 0.3rem 0.9rem; border-radius: 100px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      border: 1px solid var(--gold-light); padding: 0.3rem 0.9rem; border-radius: 100px;
       margin-bottom: 0.9rem; background: rgba(200,150,62,0.06);
     }
     h1 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--ink); line-height: 1.25; margin-bottom: 0.6rem; }
     .subtitle { font-size: 0.92rem; color: #6B6157; line-height: 1.65; }
-
-    /* ── Steps ── */
     .steps { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2.2rem; }
     .step-dot { width: 32px; height: 4px; border-radius: 100px; background: var(--border); transition: background 0.3s; }
     .step-dot.active { background: var(--gold); }
-
-    /* ── Divider ── */
     .divider { display: flex; align-items: center; gap: 0.8rem; margin: 0 0 1.5rem; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .divider span { font-size: 0.73rem; letter-spacing: 0.13em; text-transform: uppercase; color: #9E9286; white-space: nowrap; }
-
-    /* ── Fields ── */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.4rem; }
     .field { display: flex; flex-direction: column; gap: 0.45rem; }
     .field.full { grid-column: 1 / -1; }
@@ -99,30 +77,22 @@
     .error-msg { font-size: 0.76rem; color: var(--rust); display: none; }
     .field.has-error .error-msg { display: block; }
     .field.has-error input, .field.has-error select { border-color: var(--rust); }
-
-    /* ── Level cards ── */
     .level-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.7rem; }
     .level-card {
       display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
-      padding: 1rem 0.5rem; border: 1px solid var(--border);
-      border-radius: 4px; cursor: pointer; text-align: center;
-      background: white; transition: all 0.2s; user-select: none;
+      padding: 1rem 0.5rem; border: 1px solid var(--border); border-radius: 4px;
+      cursor: pointer; text-align: center; background: white; transition: all 0.2s; user-select: none;
     }
     .level-card input[type=radio] { display: none; }
-    .level-icon { font-size: 1.5rem; }
     .level-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); }
-    .level-desc { font-size: 0.74rem; color: #9E9286; line-height: 1.4; }
     .level-card:has(input:checked) { border-color: var(--gold); background: rgba(200,150,62,0.06); box-shadow: 0 2px 12px rgba(200,150,62,0.15); }
     .level-card:has(input:checked) .level-name { color: var(--gold); }
     .level-card:hover { border-color: var(--gold-light); }
-
-    /* ── Schedule slots ── */
     .slot-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.55rem; }
     .slot-btn {
       display: flex; flex-direction: column; align-items: center; gap: 0.18rem;
-      padding: 0.65rem 0.4rem; border: 1px solid var(--border);
-      border-radius: 3px; cursor: pointer; background: white;
-      transition: all 0.18s; user-select: none; text-align: center;
+      padding: 0.65rem 0.4rem; border: 1px solid var(--border); border-radius: 3px;
+      cursor: pointer; background: white; transition: all 0.18s; user-select: none; text-align: center;
     }
     .slot-btn input[type=radio] { display: none; }
     .slot-day { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: #9E9286; }
@@ -130,14 +100,11 @@
     .slot-btn:has(input:checked) { border-color: var(--gold); background: rgba(200,150,62,0.07); }
     .slot-btn:has(input:checked) .slot-day { color: var(--gold); }
     .slot-btn:hover { border-color: var(--gold-light); }
-
-    /* ── Checkbox ── */
     .check-row { display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer; padding: 0.5rem 0; }
     .check-row input[type=checkbox] { display: none; }
     .check-box {
-      width: 18px; height: 18px; border: 1.5px solid var(--border);
-      border-radius: 2px; flex-shrink: 0; margin-top: 1px;
-      display: flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 2px;
+      flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center;
       background: white; transition: all 0.18s;
     }
     .check-row:has(input:checked) .check-box { background: var(--gold); border-color: var(--gold); }
@@ -145,22 +112,17 @@
     .check-row:has(input:checked) .check-box svg { opacity: 1; }
     .check-text { font-size: 0.87rem; color: #5A5048; line-height: 1.5; }
     .check-text a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
-
-    /* ── Recap ── */
     .recap-box {
-      background: white; border: 1px solid var(--border);
-      border-radius: 3px; padding: 1.1rem 1.3rem;
-      margin-bottom: 1.4rem; font-size: 0.88rem; color: #3A3028; line-height: 2;
+      background: white; border: 1px solid var(--border); border-radius: 3px;
+      padding: 1.1rem 1.3rem; margin-bottom: 1.4rem; font-size: 0.88rem; color: #3A3028; line-height: 2;
     }
     .recap-row { display: flex; gap: 0.5rem; align-items: baseline; }
     .recap-label { font-weight: 500; white-space: nowrap; }
-
-    /* ── Buttons ── */
     .btn-primary {
-      width: 100%; padding: 0.95rem;
-      background: var(--ink); color: white; border: none; border-radius: 3px;
-      font-family: 'DM Sans', sans-serif; font-size: 0.94rem; font-weight: 500; letter-spacing: 0.04em;
-      cursor: pointer; transition: background 0.2s, transform 0.15s;
+      width: 100%; padding: 0.95rem; background: var(--ink); color: white; border: none;
+      border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 0.94rem;
+      font-weight: 500; letter-spacing: 0.04em; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       margin-top: 1rem; overflow: hidden; position: relative;
     }
@@ -174,29 +136,23 @@
     .btn-primary:active { transform: scale(0.99); }
     .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
     .btn-ghost {
-      width: 100%; padding: 0.78rem;
-      background: transparent; color: #6B6157;
+      width: 100%; padding: 0.78rem; background: transparent; color: #6B6157;
       border: 1px solid var(--border); border-radius: 3px;
       font-family: 'DM Sans', sans-serif; font-size: 0.87rem;
       cursor: pointer; transition: all 0.18s; margin-top: 0.55rem;
     }
     .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
-
-    /* ── Spinner ── */
     .spinner {
       width: 17px; height: 17px; border: 2px solid rgba(255,255,255,0.3);
       border-top-color: white; border-radius: 50%;
       animation: spin 0.7s linear infinite; display: none; flex-shrink: 0;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .submit-error {
-      display: none; margin-top: 0.65rem;
-      font-size: 0.8rem; color: var(--rust); text-align: center;
-      padding: 0.4rem 0.7rem; background: rgba(139,58,42,0.06); border-radius: 3px;
+      display: none; margin-top: 0.65rem; font-size: 0.8rem; color: var(--rust);
+      text-align: center; padding: 0.4rem 0.7rem;
+      background: rgba(139,58,42,0.06); border-radius: 3px;
     }
-
-    /* ── Success ── */
     .success-view {
       display: none; text-align: center; padding: 3rem 2rem;
       animation: rise 0.55s cubic-bezier(0.22,1,0.36,1) both;
@@ -204,15 +160,12 @@
     .success-icon {
       width: 68px; height: 68px; border-radius: 50%;
       background: rgba(74,103,65,0.1); border: 2px solid var(--sage);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1.4rem;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 1.4rem;
     }
     .success-view h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: var(--ink); margin-bottom: 0.8rem; }
     .success-view p { color: #6B6157; font-size: 0.93rem; line-height: 1.7; }
     .success-arabic { font-size: 1.3rem; color: var(--gold); margin: 0.8rem 0; direction: rtl; }
-
     .form-note { text-align: center; font-size: 0.76rem; color: #9E9286; margin-top: 1.4rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
-
     @media (max-width: 580px) {
       .card-inner { padding: 1.8rem 1.4rem; }
       .form-grid  { grid-template-columns: 1fr; }
@@ -228,7 +181,6 @@
   <div class="card-accent"></div>
   <div class="card-inner">
 
-    <!-- ══ FORM VIEW ══ -->
     <div id="formView">
       <div class="header">
         <div class="arabic-title">تَعَلَّمِ التَّجْوِيدَ وَالقِرَاءَة</div>
@@ -245,7 +197,7 @@
 
       <form id="regForm" novalidate>
 
-        <!-- ── Étape 1 — Profil ── -->
+        <!-- Étape 1 -->
         <div id="step1">
           <div class="divider"><span>Informations personnelles</span></div>
           <div class="form-grid">
@@ -272,21 +224,20 @@
           <button type="button" class="btn-primary" onclick="goStep2()">Continuer →</button>
         </div>
 
-        <!-- ── Étape 2 — Cours & Horaire ── -->
+        <!-- Étape 2 -->
         <div id="step2" style="display:none">
-
           <div class="divider"><span>Niveau d'apprentissage</span></div>
           <div class="level-grid">
             <label class="level-card">
-              <input type="radio" name="niveau" value="debutant" />
+              <input type="radio" name="niveau" value="Débutant" />
               <span class="level-name">Débutant</span>
             </label>
             <label class="level-card">
-              <input type="radio" name="niveau" value="intermediaire" />
+              <input type="radio" name="niveau" value="Intermédiaire" />
               <span class="level-name">Intermédiaire</span>
             </label>
             <label class="level-card">
-              <input type="radio" name="niveau" value="avance" />
+              <input type="radio" name="niveau" value="Avancé" />
               <span class="level-name">Avancé</span>
             </label>
           </div>
@@ -298,18 +249,9 @@
               <label class="field-label">Cours <span>*</span></label>
               <select name="cours">
                 <option value="">— Sélectionner —</option>
-                <optgroup label="🌱 Débutant">
-                  <option value="Lecture des lettres arabes (Qaïda Nourania)">Lecture des lettres arabes — Qaïda Nourania</option>
-                  <option value="Introduction au Tajwid — Makharej">Introduction au Tajwid — Makharej (sorties des lettres)</option>
-                </optgroup>
-                <optgroup label="📖 Intermédiaire">
-                  <option value="Tajwid — Règles fondamentales (Noon & Meem)">Tajwid — Règles fondamentales (Noon & Meem)</option>
-                  <option value="Lecture courante du Coran — Hafs">Lecture courante du Coran — Hafs 'an 'Asim</option>
-                </optgroup>
-                <optgroup label="🌙 Avancé">
-                  <option value="Tajwid avancé — Perfectionnement de la récitation">Tajwid avancé — Perfectionnement de la récitation</option>
-                  <option value="Mémorisation (Hifz) — Accompagnement encadré">Mémorisation (Hifz) — Accompagnement encadré</option>
-                </optgroup>
+                <option value="Débutant">Débutant</option>
+                <option value="Intermédiaire">Intermédiaire</option>
+                <option value="Avancé">Avancé</option>
               </select>
               <span class="error-msg">Veuillez sélectionner un cours.</span>
             </div>
@@ -346,7 +288,7 @@
           <button type="button" class="btn-ghost" onclick="goStep1()">← Retour</button>
         </div>
 
-        <!-- ── Étape 3 — Confirmation ── -->
+        <!-- Étape 3 -->
         <div id="step3" style="display:none">
           <div class="divider"><span>Récapitulatif de votre inscription</span></div>
           <div class="recap-box" id="recap"></div>
@@ -384,7 +326,6 @@
       <p class="form-note">🔒 Vos données sont sécurisées et ne sont jamais partagées avec des tiers.</p>
     </div>
 
-    <!-- ══ SUCCESS VIEW ══ -->
     <div class="success-view" id="successView">
       <div class="success-icon">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -394,8 +335,8 @@
       <h2>Barak Allahu Fik !</h2>
       <div class="success-arabic">بَارَكَ اللَّهُ فِيكَ</div>
       <p>Votre inscription a bien été enregistrée.<br>
-      Un e-mail de confirmation vous sera envoyé très prochainement.<br><br>
-      <strong style="color:var(--ink)">Qu'Allah facilite votre apprentissage. ✦</strong></p>
+      Un e-mail de confirmation vous a été envoyé.<br><br>
+      <strong style="color:var(--ink)">Que Allah facilite votre apprentissage. ✦</strong></p>
       <br>
       <button class="btn-ghost" style="max-width:240px;margin:0 auto" onclick="resetForm()">Nouvelle inscription</button>
     </div>
@@ -404,18 +345,23 @@
 </div>
 
 <script>
-  /* ═══════════════════════════════════════
-     ⚙️  CONFIGURATION SUPABASE
-     Remplacer les deux valeurs ci-dessous
-     avant de partager le lien aux étudiants
-  ═══════════════════════════════════════ */
+  /* ══════════════════════════════════════
+     CONFIGURATION — à renseigner
+  ══════════════════════════════════════ */
   const SUPABASE_URL   = 'https://mssqgelnplvvvuflrrau.supabase.co'; 
   const SUPABASE_KEY   = 'sb_publishable_LrM2MB_K6-2ocox2ewYOMA_dVSPxaG4';
-  const SUPABASE_TABLE = 'inscriptions';                         // ← nom de la table
+  const SUPABASE_TABLE = 'inscriptions';
 
-  /* ═══════════════════════════════════════
-     NAVIGATION ENTRE ÉTAPES
-  ═══════════════════════════════════════ */
+  const EMAILJS_SERVICE_ID  = 'service_4z0afmm';
+  const EMAILJS_TEMPLATE_ID = 'template_e24ugve';
+  const EMAILJS_PUBLIC_KEY  = 'KPkq8ok3-BYxv41l3';
+
+  /* Init EmailJS */
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  /* ══════════════════════════════════════
+     NAVIGATION
+  ══════════════════════════════════════ */
   const fd = {};
 
   function setStep(n) {
@@ -476,12 +422,11 @@
   }
 
   function buildRecap() {
-    const lvl = { debutant:'Débutant', intermediaire:'Intermédiaire', avance:'Avancé' };
     const rows = [
       ['👤 Nom',     `${fd.prenom} ${fd.nom}`],
       ['📧 E-mail',  fd.email],
       ...(fd.tel ? [['📞 Téléphone', fd.tel]] : []),
-      ['🎓 Niveau',  lvl[fd.niveau]],
+      ['🎓 Niveau',  fd.niveau],
       ['📚 Cours',   fd.cours],
       ['💻 Format',  fd.format],
       ['🕐 Horaire', fd.horaire],
@@ -492,9 +437,9 @@
       .join('');
   }
 
-  /* ═══════════════════════════════════════
-     ENVOI VERS SUPABASE
-  ═══════════════════════════════════════ */
+  /* ══════════════════════════════════════
+     SUPABASE
+  ══════════════════════════════════════ */
   async function insertToSupabase(payload) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
       method: 'POST',
@@ -512,9 +457,25 @@
     }
   }
 
-  /* ═══════════════════════════════════════
-     SOUMISSION DU FORMULAIRE
-  ═══════════════════════════════════════ */
+  /* ══════════════════════════════════════
+     EMAILJS
+  ══════════════════════════════════════ */
+  async function sendConfirmationEmail() {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      prenom:  fd.prenom,
+      nom:     fd.nom,
+      email:   fd.email,
+      niveau:  fd.niveau,
+      cours:   fd.cours,
+      format:  fd.format,
+      horaire: fd.horaire,
+      message: fd.message || '—',
+    });
+  }
+
+  /* ══════════════════════════════════════
+     SOUMISSION
+  ══════════════════════════════════════ */
   document.getElementById('regForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const cgvErr = document.getElementById('cgv-err');
@@ -546,7 +507,11 @@
     };
 
     try {
+      /* 1. Sauvegarde Supabase */
       await insertToSupabase(payload);
+      /* 2. Email de confirmation */
+      await sendConfirmationEmail();
+      /* 3. Succès */
       document.getElementById('formView').style.display    = 'none';
       document.getElementById('successView').style.display = 'block';
     } catch(err) {
