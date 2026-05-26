@@ -450,12 +450,7 @@ if (reservationId) {
     body: JSON.stringify({ reservation_id: reservationId }),
   }).catch(console.warn);
 }
-// ligne 453
-
-document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
-document.getElementById('confirm-email').textContent = email;
-
-
+    
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
     document.getElementById('confirm-email').textContent   = email;
     goTo(5);
