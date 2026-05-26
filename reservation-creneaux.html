@@ -451,7 +451,9 @@ if (reservationId) {
   }).catch(console.warn);
 }
 // ligne 453
-document.getElementById('confirm-teacher')...
+
+document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
+document.getElementById('confirm-email').textContent = email;
 
 
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
