@@ -424,7 +424,7 @@ async function submitRequest() {
         'Content-Type':  'application/json',
         'apikey':        SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'Prefer':        'return=minimal',
+        'Prefer':        'return=representation',
       },
       body: JSON.stringify(payload),
     });
@@ -433,22 +433,26 @@ async function submitRequest() {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || `Erreur ${res.status}`);
     }
-
-    // Succès — mise à jour locale pour bloquer le créneau visuellement
+// Succès — mise à jour locale pour bloquer le créneau visuellement
     requests.push({ slotId: selectedSlot.id, status: 'approved' });
 
-    // EmailJS — email vers l'enseignant (si configuré)
-    if (EMAILJS_ENABLED && EMAILJS_PUBLIC_KEY) {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_TEACHER, {
-        to_email:      selectedTeacher.email,
-        teacher_name:  selectedTeacher.name,
-        student_name:  `${prenom} ${nom}`,
-        student_email: email,
-        student_level: payload.niveau,
-        slot:          selectedSlot.label,
-      }).catch(console.warn);
-    }
+// Appel Edge Function — fire & forget
+     const created = await res.json();
+     const reservationId = created?.[0]?.id;
+if (reservationId) {
+  fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify({ reservation_id: reservationId }),
+  }).catch(console.warn);
+}
+// ligne 453
+document.getElementById('confirm-teacher')...
+
 
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
     document.getElementById('confirm-email').textContent   = email;
