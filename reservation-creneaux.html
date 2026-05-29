@@ -239,7 +239,7 @@
 
 <script>
 // ──────────────────────────── CONFIG ────────────────────────────
-const SUPABASE_URL      = 'https://mssqgelnplvvvuflrrau.supabase.co';
+const SUPABASE_URL      = 'https://mssqgelnplvvvuflrrau.supabase.co/functions/v1/send-reservation-email';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zc3FnZWxucGx2dnZ1ZmxycmF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzMTkzODQsImV4cCI6MjA5Mzg5NTM4NH0.GxuDdw1Zo9WnQYFvDT9KPAOwlwXqet-ZvE2fEaJiQhs';
 
 // ─────────────────────────── DONNÉES ────────────────────────────
@@ -420,33 +420,36 @@ async function submitRequest() {
         'Content-Type':  'application/json',
         'apikey':        SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'Prefer':        'return=representation',
+        'Prefer':        'return=minimal',
       },
       body: JSON.stringify(payload),
     });
 
-    const created = await res.json();
-
     if (!res.ok) {
-      throw new Error(created?.message || `Erreur ${res.status}`);
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `Erreur ${res.status}`);
     }
 
     // Succès — mise à jour locale pour bloquer le créneau visuellement
     requests.push({ slotId: selectedSlot.id, status: 'approved' });
 
-    // Appel Edge Function — fire & forget
-    const reservationId = created?.[0]?.id;
-    if (reservationId) {
-      fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({ reservation_id: reservationId }),
-      }).catch(console.warn);
-    }
+    // Appel Edge Function avec les infos de la réservation directement
+    fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        enseignant_id:   selectedTeacher.id,
+        enseignant_nom:  selectedTeacher.name,
+        student_name:    `${prenom} ${nom}`,
+        student_email:   email,
+        student_level:   payload.niveau,
+        slot:            selectedSlot.label,
+      }),
+    }).catch(console.warn);
 
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
     document.getElementById('confirm-email').textContent   = email;
