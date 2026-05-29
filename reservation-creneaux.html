@@ -427,29 +427,36 @@ async function submitRequest() {
 
     const created = await res.json();
 
-    if (!res.ok) {
-      throw new Error(created?.message || `Erreur ${res.status}`);
+if (!res.ok) {
+  throw new Error(created?.message || `Erreur ${res.status}`);
+}
+
+requests.push({ slotId: selectedSlot.id, status: 'approved' });
+
+// Récupérer l'id via SELECT plutôt que return=representation
+const selectRes = await fetch(
+  `${SUPABASE_URL}/rest/v1/reservations?email=eq.${encodeURIComponent(email)}&order=created_at.desc&limit=1`,
+  {
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
     }
+  }
+);
+const rows = await selectRes.json();
+const reservationId = rows?.[0]?.id;
 
-    // Succès — mise à jour locale pour bloquer le créneau visuellement
-    requests.push({ slotId: selectedSlot.id, status: 'approved' });
-
-    // Appel Edge Function — fire & forget
-    const reservationId = created?.[0]?.id;
-    if (reservationId) {
-      fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({ reservation_id: reservationId }),
-      }).catch(console.warn);
-    }
-
-    document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
-    document.getElementById('confirm-email').textContent   = email;
+if (reservationId) {
+  fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify({ reservation_id: reservationId }),
+  }).catch(console.warn);
+}
     goTo(5);
 
   } catch (err) {
