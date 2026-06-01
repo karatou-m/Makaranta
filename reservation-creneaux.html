@@ -417,11 +417,7 @@ async function submitRequest() {
   };
 
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
     const res = await fetch(`${SUPABASE_URL}/rest/v1/reservations`, {
-      signal: controller.signal,
-
       method:  'POST',
       headers: {
         'Content-Type':  'application/json',
@@ -431,19 +427,16 @@ async function submitRequest() {
       },
       body: JSON.stringify(payload),
     });
-    clearTimeout(timeout);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || `Erreur ${res.status}`);
     }
-
     // Succès — mise à jour locale pour bloquer le créneau visuellement
     requests.push({ slotId: selectedSlot.id, status: 'approved' });
-
-   document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
-   document.getElementById('confirm-email').textContent = email;
-   goTo(5);
+    document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
+    document.getElementById('confirm-email').textContent = email;
+    goTo(5);
 
   // Appel Edge Function après affichage écran succès
    setTimeout(() => {
