@@ -438,8 +438,13 @@ async function submitRequest() {
     // Succès — mise à jour locale pour bloquer le créneau visuellement
     requests.push({ slotId: selectedSlot.id, status: 'approved' });
 
-    // Appel Edge Function avec les infos de la réservation directement
-    fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
+   document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
+   document.getElementById('confirm-email').textContent = email;
+   goTo(5);
+
+  // Appel Edge Function après affichage écran succès
+   setTimeout(() => {
+      fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -447,18 +452,15 @@ async function submitRequest() {
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
       },
       body: JSON.stringify({
-        enseignant_id:   selectedTeacher.id,
-        enseignant_nom:  selectedTeacher.name,
-        student_name:    `${prenom} ${nom}`,
-        student_email:   email,
-        student_level:   payload.niveau,
-        slot:            selectedSlot.label,
+        enseignant_id:  selectedTeacher.id,
+        enseignant_nom: selectedTeacher.name,
+        student_name:   `${prenom} ${nom}`,
+        student_email:  email,
+        student_level:  payload.niveau,
+        slot:           selectedSlot.label,
       }),
-    }).catch(console.warn);
-
-    document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
-    document.getElementById('confirm-email').textContent   = email;
-    goTo(5);
+   }).catch(console.warn);
+ }, 100);
 
   } catch (err) {
     console.error('Supabase error:', err);
