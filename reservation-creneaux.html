@@ -414,7 +414,11 @@ async function submitRequest() {
   };
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
     const res = await fetch(`${SUPABASE_URL}/rest/v1/reservations`, {
+      signal: controller.signal,
+
       method:  'POST',
       headers: {
         'Content-Type':  'application/json',
@@ -424,6 +428,7 @@ async function submitRequest() {
       },
       body: JSON.stringify(payload),
     });
+    clearTimeout(timeout);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
