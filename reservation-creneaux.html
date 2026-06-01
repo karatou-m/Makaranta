@@ -437,27 +437,7 @@ async function submitRequest() {
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
     document.getElementById('confirm-email').textContent = email;
     goTo(5);
-
-  // Appel Edge Function après affichage écran succès
-   setTimeout(() => {
-      fetch(`${SUPABASE_URL}/functions/v1/send-reservation-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-      body: JSON.stringify({
-        enseignant_id:  selectedTeacher.id,
-        enseignant_nom: selectedTeacher.name,
-        student_name:   `${prenom} ${nom}`,
-        student_email:  email,
-        student_level:  payload.niveau,
-        slot:           selectedSlot.label,
-      }),
-   }).catch(console.warn);
- }, 100);
-
+    
   } catch (err) {
     console.error('Supabase error:', err);
     alert(`Une erreur est survenue : ${err.message}\n\nVérifiez votre connexion ou contactez l'administrateur.`);
