@@ -62,7 +62,7 @@
     name:     `${prenom} ${nom}`,
     email:    email,
     niveau:   niveau,
-    cours:    enseignant,
+    cours: isConfirmed ? enseignant : `${enseignant} — DEMANDE REFUSÉE. Veuillez choisir un nouveau créneau.`,
     horaire:  slot,
     statut:   isConfirmed ? 'confirmé' : 'refusé',
   }).then(() => {
