@@ -519,18 +519,13 @@
 
    insertToSupabase(payload)
       .then(function() {
-        return sendConfirmationEmail();
-      })
-      .then(function() {
+        sendConfirmationEmail().catch(function(err) { console.log('EmailJS erreur:', err); });
         document.getElementById('formView').style.display    = 'none';
         document.getElementById('successView').style.display = 'block';
       })
       .catch(function(err) {
-        console.warn('Erreur:', err);
-        document.getElementById('formView').style.display    = 'none';
-        document.getElementById('successView').style.display = 'block';
-      })
-      .finally(function() {
+        errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
+        errBox.style.display = 'block';
         btn.disabled          = false;
         lbl.textContent       = 'Confirmer mon inscription';
         spinner.style.display = 'none';
