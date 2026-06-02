@@ -241,6 +241,13 @@
           </div>
           <span class="error-msg" id="niveau-err" style="display:none;margin-top:0.3rem">Veuillez selectionner votre niveau.</span>
 
+          <!-- Cours dynamique -->
+          <div id="cours-section" style="display:none;margin-top:1.8rem">
+            <div class="divider"><span>Cours</span></div>
+            <div class="level-grid" id="cours-grid"></div>
+            <span class="error-msg" id="cours-err" style="display:none;margin-top:0.3rem">Veuillez selectionner un cours.</span>
+          </div>
+
           <div class="divider" style="margin-top:1.8rem"><span>Format du cours</span></div>
           <div class="form-grid">
             <div class="field full" id="f-format">
@@ -340,7 +347,7 @@
 
   var EMAILJS_SERVICE_ID  = 'service_jgm1nvl';
   var EMAILJS_TEMPLATE_ID = 'template_e24ugve';
-  var EMAILJS_PUBLIC_KEY  = 'WixSITjIL4-G5Obzn';
+  var EMAILJS_PUBLIC_KEY  = 'KPkq8ok3-BYxv41l3';
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
@@ -384,15 +391,40 @@
     setStep(2);
   }
 
+  /* == COURS PAR NIVEAU == */
+  var coursParNiveau = {
+    'Debutant':      ['Tajwid', 'Alphabetisation', 'Programme individuel'],
+    'Intermediaire': ['Lecture debutant', 'Alphabetisation', 'Programme individuel'],
+    'Avance':        ['Memorisation - Hifz', 'Programme individuel']
+  };
+
+  document.querySelectorAll('[name=niveau]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      var grid    = document.getElementById('cours-grid');
+      var section = document.getElementById('cours-section');
+      var cours   = coursParNiveau[this.value] || [];
+      grid.innerHTML = cours.map(function(c) {
+        return '<label class="level-card">' +
+          '<input type="radio" name="cours" value="' + c + '" />' +
+          '<span class="level-name">' + c + '</span>' +
+        '</label>';
+      }).join('');
+      section.style.display = '';
+      document.getElementById('cours-err').style.display = 'none';
+    });
+  });
+
   function goStep3() {
-    var niv = document.querySelector('[name=niveau]:checked');
-    var hor = document.querySelector('[name=horaire]:checked');
-    var fmt = chkRequired('f-format', 'format');
+    var niv  = document.querySelector('[name=niveau]:checked');
+    var crs  = document.querySelector('[name=cours]:checked');
+    var hor  = document.querySelector('[name=horaire]:checked');
+    var fmt  = chkRequired('f-format', 'format');
     document.getElementById('niveau-err').style.display  = niv ? 'none' : 'block';
+    document.getElementById('cours-err').style.display   = crs ? 'none' : 'block';
     document.getElementById('horaire-err').style.display = hor ? 'none' : 'block';
-    if (!niv || !hor || !fmt) return;
+    if (!niv || !crs || !hor || !fmt) return;
     fd.niveau  = niv.value;
-    fd.cours   = niv.value;
+    fd.cours   = crs.value;
     fd.format  = document.querySelector('[name=format]').value;
     fd.horaire = hor.value;
     fd.message = document.querySelector('[name=message]').value.trim();
@@ -405,6 +437,7 @@
       ['Nom',     fd.prenom + ' ' + fd.nom],
       ['E-mail',  fd.email],
       ['Niveau',  fd.niveau],
+      ['Cours',   fd.cours],
       ['Format',  fd.format],
       ['Horaire', fd.horaire],
     ];
