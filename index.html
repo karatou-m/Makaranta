@@ -347,7 +347,7 @@
 
   var EMAILJS_SERVICE_ID  = 'service_jgm1nvl';
   var EMAILJS_TEMPLATE_ID = 'template_e24ugve';
-  var EMAILJS_PUBLIC_KEY  = 'KPkq8ok3-BYxv41l3';
+  var EMAILJS_PUBLIC_KEY  = 'WixSITjIL4-G5Obzn';
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
@@ -519,13 +519,18 @@
 
    insertToSupabase(payload)
       .then(function() {
-        sendConfirmationEmail().catch(function(err) { console.log('EmailJS erreur:', err); });
+        return sendConfirmationEmail();
+      })
+      .then(function() {
         document.getElementById('formView').style.display    = 'none';
         document.getElementById('successView').style.display = 'block';
       })
       .catch(function(err) {
-        errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
-        errBox.style.display = 'block';
+        console.warn('Erreur:', err);
+        document.getElementById('formView').style.display    = 'none';
+        document.getElementById('successView').style.display = 'block';
+      })
+      .finally(function() {
         btn.disabled          = false;
         lbl.textContent       = 'Confirmer mon inscription';
         spinner.style.display = 'none';
