@@ -435,8 +435,18 @@ async function submitRequest() {
     requests.push({ slotId: selectedSlot.id, status: 'approved' });
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
     document.getElementById('confirm-email').textContent = email;
+    // Envoi mail au professeur
+    await emailjs.send(EMAILJS_SERVICE_ID, '5lrihjm', {
+      teacher_name:  selectedTeacher.name,
+      to_email:      selectedTeacher.email,
+      student_name:  `${prenom} ${nom}`,
+      student_email: email,
+      student_level: document.getElementById('niveau').value || '—',
+      slot:          selectedSlot.label,
+    });
+
     goTo(5);
-    
+
   } catch (err) {
     console.error('Supabase error:', err);
     alert(`Une erreur est survenue : ${err.message}\n\nVérifiez votre connexion ou contactez l'administrateur.`);
