@@ -248,15 +248,24 @@ const SUPABASE_URL      = 'https://mssqgelnplvvvuflrrau.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zc3FnZWxucGx2dnZ1ZmxycmF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzMTkzODQsImV4cCI6MjA5Mzg5NTM4NH0.GxuDdw1Zo9WnQYFvDT9KPAOwlwXqet-ZvE2fEaJiQhs';
 
 // ─────────────────────────── DONNÉES ────────────────────────────
-// Les emails sont gérés côté serveur (Edge Function)
-const TEACHERS = [
-  { id:'27ad8156-1d4e-4f2a-b098-61ce0d002464', name:'Ustadh Abakar',   spec:'Tajwid',               initials:'UA' },
-  { id:'daa2b978-853a-431e-bc6d-fe2757c2f4a1', name:'Ustadh Abakar',   spec:'Alphabétisation',      initials:'UA' },
-  { id:'9924956a-4823-4f41-a636-e9bdb9bca00c', name:'Ustadh Abakar',   spec:'Programme individuel', initials:'UA' },
-  { id:'4c89e3fa-6d2c-451b-9af7-c7eaa1350026', name:'Ustadh Aboubacar', spec:'Lecture débutant',     initials:'AB' },
-  { id:'966a3c66-9b31-4c76-bc6f-6e9596827198', name:'Ustadh Aboubacar', spec:'Mémorisation · Hifz',  initials:'AB' },
-  { id:'cbca9e3b-c2b5-4034-b49d-12f5dfa30c06', name:'Ustadh Aboubacar', spec:'Programme individuel', initials:'AB' }
-];
+let TEACHERS = [];
+
+async function loadTeachers() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/teachers?actif=eq.true&select=uid,nom,specialite,email`, {
+    headers: {
+      'apikey':        SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+    }
+  });
+  const data = await res.json();
+  TEACHERS = data.map(t => ({
+    id:       t.uid,
+    name:     t.nom,
+    spec:     t.specialite,
+    email:    t.email,
+    initials: t.nom.split(' ').map(w => w[0]).slice(-2).join('').toUpperCase(),
+  }));
+}
 
 const SLOT_DEFS = [
   // Lundi (offset 0)
@@ -297,6 +306,9 @@ function goTo(n) {
   if (n===2) {
     if (!document.getElementById('prenom').value.trim() || !document.getElementById('email').value.trim()) {
       alert('Veuillez renseigner au minimum votre prénom et votre e-mail.'); return;
+    }
+    if (TEACHERS.length === 0) {
+      await loadTeachers();
     }
     renderTeachers();
   }
@@ -467,7 +479,12 @@ function resetForm() {
   goTo(1);
 }
 
-goTo(1);
+async function init() {
+  await loadTeachers();
+  goTo(1);
+}
+
+init();
 </script>
 
 
