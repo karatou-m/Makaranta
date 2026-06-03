@@ -437,7 +437,7 @@ async function submitRequest() {
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
     document.getElementById('confirm-email').textContent = email;
     // Envoi mail au professeur
-    await emailjs.send('service_jgm1nvl', '5lrihjm', {
+    await emailjs.send('service_jgm1nvl', 'template_5lrihjm', {
       teacher_name:  selectedTeacher.name,
       to_email:      selectedTeacher.email,
       student_name:  `${prenom} ${nom}`,
