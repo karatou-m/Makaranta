@@ -436,15 +436,22 @@ async function submitRequest() {
     requests.push({ slotId: selectedSlot.id, status: 'approved' });
     document.getElementById('confirm-teacher').textContent = selectedTeacher.name;
     document.getElementById('confirm-email').textContent = email;
-    // Envoi mail au professeur
-    await emailjs.send('service_jgm1nvl', 'template_5lrihjm', {
-      teacher_name:  selectedTeacher.name,
-      to_email:      selectedTeacher.email,
-      student_name:  `${prenom} ${nom}`,
-      student_email: email,
-      student_level: document.getElementById('niveau').value || '—',
-      slot:          selectedSlot.label,
-    });
+   
+// Envoi mail au professeur
+const baseUrl = 'https://issou-ab.github.io/Makaranta/confirmation.html';
+const params  = `prenom=${encodeURIComponent(prenom)}&nom=${encodeURIComponent(nom)}&email=${encodeURIComponent(email)}&niveau=${encodeURIComponent(document.getElementById('niveau').value || '')}&enseignant=${encodeURIComponent(selectedTeacher.name)}&slot=${encodeURIComponent(selectedSlot.label)}`;
+
+await emailjs.send('service_jgm1nvl', 'template_5lrihjm', {
+  teacher_name:  selectedTeacher.name,
+  to_email:      selectedTeacher.email,
+  student_name:  `${prenom} ${nom}`,
+  student_email: email,
+  student_level: document.getElementById('niveau').value || '—',
+  slot:          selectedSlot.label,
+  approve_url:   `${baseUrl}?action=confirme&${params}`,
+  reject_url:    `${baseUrl}?action=refuse&${params}`,
+});
+
 
     goTo(5);
 
