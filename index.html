@@ -6,6 +6,7 @@
   <title>Inscription — Cours Tajwid & Lecture du Coran</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -99,6 +100,18 @@
     .slot-btn:has(input:checked) { border-color: var(--gold); background: rgba(200,150,62,0.07); }
     .slot-btn:has(input:checked) .slot-day { color: var(--gold); }
     .slot-btn:hover { border-color: var(--gold-light); }
+    .riwayate-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.7rem; }
+    .riwayate-card {
+      display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+      padding: 0.8rem 0.5rem; border: 1px solid var(--border); border-radius: 4px;
+      cursor: pointer; text-align: center; background: white; transition: all 0.2s; user-select: none;
+    }
+    .riwayate-card input[type=radio] { display: none; }
+    .riwayate-name { font-size: 0.85rem; font-weight: 500; color: var(--ink); }
+    .riwayate-sub { font-size: 0.72rem; color: #9E9286; }
+    .riwayate-card:has(input:checked) { border-color: var(--gold); background: rgba(200,150,62,0.06); box-shadow: 0 2px 12px rgba(200,150,62,0.15); }
+    .riwayate-card:has(input:checked) .riwayate-name { color: var(--gold); }
+    .riwayate-card:hover { border-color: var(--gold-light); }
     .check-row { display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer; padding: 0.5rem 0; }
     .check-row input[type=checkbox] { display: none; }
     .check-box {
@@ -171,6 +184,7 @@
       h1 { font-size: 1.65rem; }
       .level-grid { grid-template-columns: 1fr; }
       .slot-grid { grid-template-columns: repeat(2,1fr); }
+      .riwayate-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -184,7 +198,7 @@
         <div class="arabic-title">تَعَلَّمِ التَّجْوِيدَ وَالقِرَاءَة</div>
         <div class="badge">✦ Inscription</div>
         <h1>Tajwid & Lecture du Coran</h1>
-        <p class="subtitle">Choisissez votre niveau, votre créneau et rejoignez<br>l'une de nos sessions encadrées par des enseignants qualifiés.</p>
+        <p class="subtitle">Choisissez votre niveau, votre creneau et rejoignez<br>l'une de nos sessions encadrees par des enseignants qualifies.</p>
       </div>
 
       <div class="steps">
@@ -241,12 +255,43 @@
           </div>
           <span class="error-msg" id="niveau-err" style="display:none;margin-top:0.3rem">Veuillez selectionner votre niveau.</span>
 
-          <!-- Cours dynamique -->
+          <!-- Cours dynamique par niveau -->
           <div id="cours-section" style="display:none;margin-top:1.8rem">
             <div class="divider"><span>Cours</span></div>
             <div class="level-grid" id="cours-grid"></div>
             <span class="error-msg" id="cours-err" style="display:none;margin-top:0.3rem">Veuillez selectionner un cours.</span>
           </div>
+
+          <!-- Riwayate -->
+          <div class="divider" style="margin-top:1.8rem"><span>Riwayate</span></div>
+          <div class="riwayate-grid">
+            <label class="riwayate-card">
+              <input type="radio" name="riwayate" value="Hafs an Asim" />
+              <span class="riwayate-name">Hafs</span>
+              <span class="riwayate-sub">'an 'Asim</span>
+            </label>
+            <label class="riwayate-card">
+              <input type="radio" name="riwayate" value="Shu'ba an Asim" />
+              <span class="riwayate-name">Shu'ba</span>
+              <span class="riwayate-sub">'an 'Asim</span>
+            </label>
+            <label class="riwayate-card">
+              <input type="radio" name="riwayate" value="Warsh an Nafi - Al-Asbahani" />
+              <span class="riwayate-name">Warsh — Al-Asbahani</span>
+              <span class="riwayate-sub">'an Nafi'</span>
+            </label>
+            <label class="riwayate-card">
+              <input type="radio" name="riwayate" value="Warsh an Nafi - Al-Azraq" />
+              <span class="riwayate-name">Warsh — Al-Azraq</span>
+              <span class="riwayate-sub">'an Nafi'</span>
+            </label>
+            <label class="riwayate-card">
+              <input type="radio" name="riwayate" value="Qalun an Nafi" />
+              <span class="riwayate-name">Qalun</span>
+              <span class="riwayate-sub">'an Nafi'</span>
+            </label>
+          </div>
+          <span class="error-msg" id="riwayate-err" style="display:none;margin-top:0.3rem">Veuillez selectionner une riwayate.</span>
 
           <div class="divider" style="margin-top:1.8rem"><span>Format du cours</span></div>
           <div class="form-grid">
@@ -321,6 +366,7 @@
       <p class="form-note">Vos donnees sont securisees et ne sont jamais partagees avec des tiers.</p>
     </div>
 
+    <!-- Success -->
     <div class="success-view" id="successView">
       <div class="success-icon">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -329,8 +375,8 @@
       </div>
       <h2>Barak Allahu Fik !</h2>
       <div class="success-arabic">بَارَكَ اللَّهُ فِيكَ</div>
-      <p>Votre inscription a bien été enregistrée.<br>
-      Un e-mail de confirmation vous a été envoyé.<br><br>
+      <p>Votre inscription a bien ete enregistree.<br>
+      Un e-mail de confirmation vous a ete envoye.<br><br>
       <strong style="color:var(--ink)">Qu'Allah facilite votre apprentissage, Amine !</strong></p>
       <br>
       <button class="btn-ghost" style="max-width:240px;margin:0 auto" onclick="resetForm()">Nouvelle inscription</button>
@@ -340,10 +386,11 @@
 </div>
 
 <script>
-  /* == CONFIGURATION — remplacer avant de mettre en ligne == */
-  var SUPABASE_URL   = 'https://mssqgelnplvvvuflrrau.supabase.co'; 
-  var SUPABASE_KEY   = 'sb_publishable_LrM2MB_K6-2ocox2ewYOMA_dVSPxaG4';
-  var SUPABASE_TABLE = 'inscriptions';
+  /* == CONFIGURATION == */
+  var SUPABASE_URL      = 'https://mssqgelnplvvvuflrrau.supabase.co';
+  var SUPABASE_KEY      = 'sb_publishable_LrM2MB_K6-2ocox2ewYOMA_dVSPxaG4';
+  var SUPABASE_TABLE    = 'inscriptions';
+  var EDGE_FUNCTION_URL = 'https://mssqgelnplvvvuflrrau.supabase.co/functions/v1/send-inscription-pdf';
 
   var EMAILJS_SERVICE_ID  = 'service_jgm1nvl';
   var EMAILJS_TEMPLATE_ID = 'template_e24ugve';
@@ -351,7 +398,6 @@
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  /* == DONNEES DU FORMULAIRE == */
   var fd = {};
 
   /* == NAVIGATION == */
@@ -417,29 +463,33 @@
   function goStep3() {
     var niv  = document.querySelector('[name=niveau]:checked');
     var crs  = document.querySelector('[name=cours]:checked');
+    var riw  = document.querySelector('[name=riwayate]:checked');
     var hor  = document.querySelector('[name=horaire]:checked');
     var fmt  = chkRequired('f-format', 'format');
-    document.getElementById('niveau-err').style.display  = niv ? 'none' : 'block';
-    document.getElementById('cours-err').style.display   = crs ? 'none' : 'block';
-    document.getElementById('horaire-err').style.display = hor ? 'none' : 'block';
-    if (!niv || !crs || !hor || !fmt) return;
-    fd.niveau  = niv.value;
-    fd.cours   = crs.value;
-    fd.format  = document.querySelector('[name=format]').value;
-    fd.horaire = hor.value;
-    fd.message = document.querySelector('[name=message]').value.trim();
+    document.getElementById('niveau-err').style.display   = niv ? 'none' : 'block';
+    document.getElementById('cours-err').style.display    = crs ? 'none' : 'block';
+    document.getElementById('riwayate-err').style.display = riw ? 'none' : 'block';
+    document.getElementById('horaire-err').style.display  = hor ? 'none' : 'block';
+    if (!niv || !crs || !riw || !hor || !fmt) return;
+    fd.niveau    = niv.value;
+    fd.cours     = crs.value;
+    fd.riwayate  = riw.value;
+    fd.format    = document.querySelector('[name=format]').value;
+    fd.horaire   = hor.value;
+    fd.message   = document.querySelector('[name=message]').value.trim();
     buildRecap();
     setStep(3);
   }
 
   function buildRecap() {
     var rows = [
-      ['Nom',     fd.prenom + ' ' + fd.nom],
-      ['E-mail',  fd.email],
-      ['Niveau',  fd.niveau],
-      ['Cours',   fd.cours],
-      ['Format',  fd.format],
-      ['Horaire', fd.horaire],
+      ['Nom',      fd.prenom + ' ' + fd.nom],
+      ['E-mail',   fd.email],
+      ['Niveau',   fd.niveau],
+      ['Cours',    fd.cours],
+      ['Riwayate', fd.riwayate],
+      ['Format',   fd.format],
+      ['Horaire',  fd.horaire],
     ];
     if (fd.tel)     rows.splice(2, 0, ['Telephone', fd.tel]);
     if (fd.message) rows.push(['Message', fd.message]);
@@ -447,6 +497,137 @@
       .map(function(r) {
         return '<div class="recap-row"><span class="recap-label">' + r[0] + ' :</span><span>' + r[1] + '</span></div>';
       }).join('');
+  }
+
+  /* == GENERATION PDF == */
+  function generatePDFBase64() {
+    var doc = new window.jspdf.jsPDF();
+    var gold  = [200, 150, 62];
+    var ink   = [26, 22, 18];
+    var sage  = [74, 103, 65];
+    var y = 20;
+
+    /* En-tete */
+    doc.setFillColor(gold[0], gold[1], gold[2]);
+    doc.rect(0, 0, 210, 8, 'F');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(ink[0], ink[1], ink[2]);
+    doc.text('Fiche d\'inscription', 105, 25, { align: 'center' });
+
+    doc.setFontSize(12);
+    doc.setTextColor(gold[0], gold[1], gold[2]);
+    doc.text('Tajwid & Lecture du Coran', 105, 33, { align: 'center' });
+
+    /* Ligne separatrice */
+    doc.setDrawColor(gold[0], gold[1], gold[2]);
+    doc.setLineWidth(0.5);
+    doc.line(15, 38, 195, 38);
+
+    y = 50;
+    var rows = [
+      ['Prenom', fd.prenom],
+      ['Nom', fd.nom],
+      ['E-mail', fd.email],
+      ['Niveau', fd.niveau],
+      ['Cours', fd.cours],
+      ['Riwayate', fd.riwayate],
+      ['Format', fd.format],
+      ['Horaire', fd.horaire],
+    ];
+    if (fd.tel)     rows.splice(2, 0, ['Telephone', fd.tel]);
+    if (fd.message) rows.push(['Message', fd.message]);
+
+    rows.forEach(function(r, i) {
+      if (i % 2 === 0) {
+        doc.setFillColor(250, 247, 242);
+        doc.rect(15, y - 5, 180, 10, 'F');
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(sage[0], sage[1], sage[2]);
+      doc.text(r[0] + ' :', 20, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(ink[0], ink[1], ink[2]);
+      doc.text(r[1] || '-', 70, y);
+      y += 12;
+    });
+
+    /* Date */
+    doc.setFontSize(8);
+    doc.setTextColor(158, 146, 134);
+    var now = new Date();
+    doc.text('Inscription du ' + now.toLocaleDateString('fr-FR') + ' a ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}), 15, 280);
+
+    /* Pied de page */
+    doc.setFillColor(gold[0], gold[1], gold[2]);
+    doc.rect(0, 287, 210, 10, 'F');
+
+    return doc.output('datauristring').split(',')[1];
+  }
+
+  function downloadPDF() {
+    var doc = new window.jspdf.jsPDF();
+    var gold  = [200, 150, 62];
+    var ink   = [26, 22, 18];
+    var sage  = [74, 103, 65];
+    var y = 20;
+
+    doc.setFillColor(gold[0], gold[1], gold[2]);
+    doc.rect(0, 0, 210, 8, 'F');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(ink[0], ink[1], ink[2]);
+    doc.text('Fiche d\'inscription', 105, 25, { align: 'center' });
+
+    doc.setFontSize(12);
+    doc.setTextColor(gold[0], gold[1], gold[2]);
+    doc.text('Tajwid & Lecture du Coran', 105, 33, { align: 'center' });
+
+    doc.setDrawColor(gold[0], gold[1], gold[2]);
+    doc.setLineWidth(0.5);
+    doc.line(15, 38, 195, 38);
+
+    y = 50;
+    var rows = [
+      ['Prenom', fd.prenom],
+      ['Nom', fd.nom],
+      ['E-mail', fd.email],
+      ['Niveau', fd.niveau],
+      ['Cours', fd.cours],
+      ['Riwayate', fd.riwayate],
+      ['Format', fd.format],
+      ['Horaire', fd.horaire],
+    ];
+    if (fd.tel)     rows.splice(2, 0, ['Telephone', fd.tel]);
+    if (fd.message) rows.push(['Message', fd.message]);
+
+    rows.forEach(function(r, i) {
+      if (i % 2 === 0) {
+        doc.setFillColor(250, 247, 242);
+        doc.rect(15, y - 5, 180, 10, 'F');
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(sage[0], sage[1], sage[2]);
+      doc.text(r[0] + ' :', 20, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(ink[0], ink[1], ink[2]);
+      doc.text(r[1] || '-', 70, y);
+      y += 12;
+    });
+
+    var now = new Date();
+    doc.setFontSize(8);
+    doc.setTextColor(158, 146, 134);
+    doc.text('Inscription du ' + now.toLocaleDateString('fr-FR') + ' a ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}), 15, 280);
+
+    doc.setFillColor(gold[0], gold[1], gold[2]);
+    doc.rect(0, 287, 210, 10, 'F');
+
+    doc.save('inscription-tajwid-' + fd.nom + '-' + fd.prenom + '.pdf');
   }
 
   /* == SUPABASE == */
@@ -467,7 +648,7 @@
     });
   }
 
-  /* == EMAILJS == */
+  /* == EMAILJS — confirmation etudiant == */
   function sendConfirmationEmail() {
     return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       to_email: fd.email,
@@ -477,9 +658,35 @@
       email:    fd.email,
       niveau:   fd.niveau,
       cours:    fd.cours,
+      riwayate: fd.riwayate,
       format:   fd.format,
       horaire:  fd.horaire,
       message:  fd.message || '-'
+    });
+  }
+
+  /* == EDGE FUNCTION — envoi PDF aux enseignants == */
+  function sendPDFToTeachers(pdfBase64) {
+    return fetch(EDGE_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      },
+      body: JSON.stringify({
+        pdf_base64: pdfBase64,
+        inscription: {
+          prenom:   fd.prenom,
+          nom:      fd.nom,
+          email:    fd.email,
+          niveau:   fd.niveau,
+          cours:    fd.cours,
+          riwayate: fd.riwayate,
+          format:   fd.format,
+          horaire:  fd.horaire,
+          message:  fd.message || '-'
+        }
+      })
     });
   }
 
@@ -510,6 +717,7 @@
       telephone:  fd.tel || null,
       niveau:     fd.niveau,
       cours:      fd.cours,
+      riwayate:   fd.riwayate,
       format:     fd.format,
       horaire:    fd.horaire,
       message:    fd.message || null,
@@ -517,9 +725,18 @@
       inscrit_le: new Date().toISOString()
     };
 
-   insertToSupabase(payload)
+    insertToSupabase(payload)
       .then(function() {
+        /* Email confirmation etudiant */
         sendConfirmationEmail().catch(function(err) { console.log('EmailJS erreur:', err); });
+        /* PDF aux enseignants en arriere-plan */
+        try {
+          var pdfBase64 = generatePDFBase64();
+          sendPDFToTeachers(pdfBase64).catch(function(err) { console.log('PDF enseignants erreur:', err); });
+        } catch(e) {
+          console.log('PDF generation erreur:', e);
+        }
+        /* Afficher succes */
         document.getElementById('formView').style.display    = 'none';
         document.getElementById('successView').style.display = 'block';
       })
@@ -534,6 +751,7 @@
 
   function resetForm() {
     document.getElementById('regForm').reset();
+    document.getElementById('cours-section').style.display = 'none';
     document.getElementById('formView').style.display    = 'block';
     document.getElementById('successView').style.display = 'none';
     setStep(1);
