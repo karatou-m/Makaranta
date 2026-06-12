@@ -749,13 +749,21 @@
       });
   });
 
-  function resetForm() {
-    document.getElementById('regForm').reset();
-    document.getElementById('cours-section').style.display = 'none';
-    document.getElementById('formView').style.display    = 'block';
-    document.getElementById('successView').style.display = 'none';
-    setStep(1);
-  }
+function resetForm() {
+  document.getElementById('regForm').reset();
+  document.getElementById('cours-section').style.display = 'none';
+  document.getElementById('formView').style.display    = 'block';
+  document.getElementById('successView').style.display = 'none';
+  var btn     = document.getElementById('btnSubmit');
+  var lbl     = document.getElementById('btnLabel');
+  var spinner = document.getElementById('spinner');
+  btn.disabled          = false;
+  lbl.textContent       = 'Confirmer mon inscription';
+  spinner.style.display = 'none';
+  fd = {};
+  setStep(1);
+}
+
 </script>
 </body>
 </html>
