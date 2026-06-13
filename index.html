@@ -727,6 +727,9 @@
 
     insertToSupabase(payload)
       .then(function() {
+        document.getElementById('btnSubmit').disabled = false;
+        document.getElementById('btnLabel').textContent = 'Confirmer mon inscription';
+        document.getElementById('spinner').style.display = 'none';       
         /* Email confirmation etudiant */
         sendConfirmationEmail().catch(function(err) { console.log('EmailJS erreur:', err); });
         /* PDF aux enseignants en arriere-plan */
