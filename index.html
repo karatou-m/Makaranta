@@ -3,770 +3,716 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inscription — Cours Tajwid & Lecture du Coran</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <title>Makaranta — École de Coran et Tajwid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --cream: #F5F0E8; --ink: #1A1612; --gold: #C8963E;
-      --gold-light: #E8B86D; --rust: #8B3A2A; --sage: #4A6741;
-      --paper: #FAF7F2; --border: #D8CFC0;
+      --emerald:   #0D9E6E;
+      --emerald-dark: #097A54;
+      --gold:      #E8A020;
+      --gold-light:#FFF3DC;
+      --indigo:    #2D3A8C;
+      --cream:     #FAFAF7;
+      --charcoal:  #1A1A2E;
+      --muted:     #6B7280;
+      --white:     #FFFFFF;
     }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'DM Sans', sans-serif; background: var(--cream);
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      padding: 2rem 1rem; position: relative; overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      line-height: 1.7;
     }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background: radial-gradient(ellipse 80% 50% at 20% 10%, rgba(200,150,62,0.13) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 90%, rgba(139,58,42,0.08) 0%, transparent 50%);
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(250,250,247,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--emerald);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--gold); }
+
+    .logo-group { display: flex; align-items: center; gap: 1rem; }
+
+    .logo-bismillah {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+      direction: rtl;
+      border-right: 1px solid rgba(0,0,0,0.12);
+      padding-right: 1rem;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--emerald); }
+
+    .nav-cta {
+      background: var(--emerald);
+      color: var(--white) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--emerald-dark) !important; color: var(--white) !important; }
+
+    .nav-cta-secondary {
+      background: var(--gold);
+      color: var(--white) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      transition: background 0.2s !important;
+    }
+    .nav-cta-secondary:hover { background: #C8860F !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    #accueil {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 5% 4rem;
+      position: relative; overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    .hero-bg-slides {
+      position: absolute; inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg-slide {
+      position: absolute; inset: 0;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+    .hero-bg-slide.active { opacity: 1; }
+
+    .hero-bg-slide:nth-child(1) {
+      background-image: url('./verset-muzzammil.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #1a1a1a;
+    }
+    .hero-bg-slide:nth-child(2) {
+      background-image: url('./coran.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #1a1a1a;
+    }
+
+    .hero-bg-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        120deg,
+        rgba(10,10,20,0.82) 0%,
+        rgba(13,158,110,0.35) 60%,
+        rgba(10,10,20,0.6) 100%
+      );
+      z-index: 1;
+    }
+
+    .hero-bg-pattern {
+      position: absolute; inset: 0; z-index: 2;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(13,158,110,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(232,160,32,0.1) 0%, transparent 50%);
       pointer-events: none;
     }
-    body::after {
-      content: ''; position: fixed; top: 0; right: 0; width: 320px; height: 320px;
-      background-image: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(200,150,62,0.07) 18px, rgba(200,150,62,0.07) 19px);
-      pointer-events: none;
+
+    .hero-content { max-width: 680px; position: relative; z-index: 3; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(232,160,32,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.8rem; font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
     }
-    .card {
-      background: var(--paper); border: 1px solid var(--border); border-radius: 4px;
-      width: 100%; max-width: 700px;
-      box-shadow: 0 8px 48px rgba(26,22,18,0.12), 0 2px 8px rgba(26,22,18,0.06);
-      overflow: hidden; animation: rise 0.7s cubic-bezier(0.22,1,0.36,1) both;
+
+    .hero-bismillah {
+      font-family: 'Traditional Arabic', 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+      font-size: clamp(4rem, 10vw, 7rem);
+      font-weight: 400;
+      color: var(--gold);
+      direction: rtl;
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 20px rgba(232,160,32,0.4);
     }
-    @keyframes rise { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
-    .card-accent { height: 5px; background: linear-gradient(90deg, var(--rust), var(--gold), var(--sage)); }
-    .card-inner { padding: 3rem 3.5rem; }
-    .header { text-align: center; margin-bottom: 2.5rem; }
-    .arabic-title { font-size: 1.5rem; color: var(--gold); margin-bottom: 0.4rem; direction: rtl; }
-    .badge {
-      display: inline-block; font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
-      border: 1px solid var(--gold-light); padding: 0.3rem 0.9rem;
-      border-radius: 100px; margin-bottom: 0.9rem; background: rgba(200,150,62,0.06);
+
+    .hero-bismillah-line2 {
+      display: block;
+      font-size: clamp(2.5rem, 5.5vw, 3.8rem);
+      font-weight: 700;
+      color: #2DD4A7;
+      margin-top: 1.5rem;
+      text-shadow: 0 2px 16px rgba(45,212,167,0.4);
     }
-    h1 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--ink); line-height: 1.25; margin-bottom: 0.6rem; }
-    .subtitle { font-size: 0.92rem; color: #6B6157; line-height: 1.65; }
-    .steps { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2.2rem; }
-    .step-dot { width: 32px; height: 4px; border-radius: 100px; background: var(--border); transition: background 0.3s; }
-    .step-dot.active { background: var(--gold); }
-    .divider { display: flex; align-items: center; gap: 0.8rem; margin: 0 0 1.5rem; }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .divider span { font-size: 0.73rem; letter-spacing: 0.13em; text-transform: uppercase; color: #9E9286; white-space: nowrap; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.4rem; }
-    .field { display: flex; flex-direction: column; gap: 0.45rem; }
-    .field.full { grid-column: 1 / -1; }
-    label.field-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: #4A4038; }
-    label.field-label span { color: var(--rust); margin-left: 2px; }
-    input[type=text], input[type=email], input[type=tel], select, textarea {
-      font-family: 'DM Sans', sans-serif; font-size: 0.94rem; color: var(--ink);
-      background: white; border: 1px solid var(--border); border-radius: 3px;
-      padding: 0.72rem 1rem; width: 100%; outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+
+    .hero-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 1.2rem;
     }
-    input::placeholder, textarea::placeholder { color: #C0B8AF; }
-    input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,150,62,0.11); }
-    textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
-    select {
-      appearance: none; cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239E9286' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
+
+    .hero-content h1 em {
+      font-style: normal;
+      color: var(--gold);
+      position: relative;
     }
-    .error-msg { font-size: 0.76rem; color: var(--rust); display: none; }
-    .field.has-error .error-msg { display: block; }
-    .field.has-error input, .field.has-error select { border-color: var(--rust); }
-    .level-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.7rem; }
-    .level-card {
-      display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
-      padding: 1rem 0.5rem; border: 1px solid var(--border); border-radius: 4px;
-      cursor: pointer; text-align: center; background: white; transition: all 0.2s; user-select: none;
+
+    .hero-content h1 em::after {
+      content: '';
+      position: absolute; bottom: 2px; left: 0; right: 0; height: 4px;
+      background: var(--emerald);
+      border-radius: 2px;
     }
-    .level-card input[type=radio] { display: none; }
-    .level-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); }
-    .level-card:has(input:checked) { border-color: var(--gold); background: rgba(200,150,62,0.06); box-shadow: 0 2px 12px rgba(200,150,62,0.15); }
-    .level-card:has(input:checked) .level-name { color: var(--gold); }
-    .level-card:hover { border-color: var(--gold-light); }
-    .slot-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.55rem; }
-    .slot-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 0.18rem;
-      padding: 0.65rem 0.4rem; border: 1px solid var(--border); border-radius: 3px;
-      cursor: pointer; background: white; transition: all 0.18s; user-select: none; text-align: center;
+
+    .hero-content p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2rem;
+      max-width: 520px;
     }
-    .slot-btn input[type=radio] { display: none; }
-    .slot-day { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: #9E9286; }
-    .slot-time { font-size: 0.84rem; font-weight: 500; color: var(--ink); }
-    .slot-btn:has(input:checked) { border-color: var(--gold); background: rgba(200,150,62,0.07); }
-    .slot-btn:has(input:checked) .slot-day { color: var(--gold); }
-    .slot-btn:hover { border-color: var(--gold-light); }
-    .riwayate-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.7rem; }
-    .riwayate-card {
-      display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
-      padding: 0.8rem 0.5rem; border: 1px solid var(--border); border-radius: 4px;
-      cursor: pointer; text-align: center; background: white; transition: all 0.2s; user-select: none;
-    }
-    .riwayate-card input[type=radio] { display: none; }
-    .riwayate-name { font-size: 0.85rem; font-weight: 500; color: var(--ink); }
-    .riwayate-sub { font-size: 0.72rem; color: #9E9286; }
-    .riwayate-card:has(input:checked) { border-color: var(--gold); background: rgba(200,150,62,0.06); box-shadow: 0 2px 12px rgba(200,150,62,0.15); }
-    .riwayate-card:has(input:checked) .riwayate-name { color: var(--gold); }
-    .riwayate-card:hover { border-color: var(--gold-light); }
-    .check-row { display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer; padding: 0.5rem 0; }
-    .check-row input[type=checkbox] { display: none; }
-    .check-box {
-      width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 2px;
-      flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center;
-      background: white; transition: all 0.18s;
-    }
-    .check-row:has(input:checked) .check-box { background: var(--gold); border-color: var(--gold); }
-    .check-box svg { opacity: 0; transition: opacity 0.15s; }
-    .check-row:has(input:checked) .check-box svg { opacity: 1; }
-    .check-text { font-size: 0.87rem; color: #5A5048; line-height: 1.5; }
-    .check-text a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
-    .recap-box {
-      background: white; border: 1px solid var(--border); border-radius: 3px;
-      padding: 1.1rem 1.3rem; margin-bottom: 1.4rem; font-size: 0.88rem; color: #3A3028; line-height: 2;
-    }
-    .recap-row { display: flex; gap: 0.5rem; align-items: baseline; }
-    .recap-label { font-weight: 500; white-space: nowrap; }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
     .btn-primary {
-      width: 100%; padding: 0.95rem; background: var(--ink); color: white; border: none;
-      border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 0.94rem;
-      font-weight: 500; letter-spacing: 0.04em; cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      margin-top: 1rem; overflow: hidden; position: relative;
+      background: var(--emerald);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
     }
-    .btn-primary::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-      transform: translateX(-100%); transition: transform 0.5s;
+    .btn-primary:hover { background: var(--emerald-dark); transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 2px solid rgba(255,255,255,0.35);
+      transition: border-color 0.2s, transform 0.2s;
+      display: inline-block;
     }
-    .btn-primary:hover::after { transform: translateX(100%); }
-    .btn-primary:hover { background: #2E2820; }
-    .btn-primary:active { transform: scale(0.99); }
-    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
-    .btn-ghost {
-      width: 100%; padding: 0.78rem; background: transparent; color: #6B6157;
-      border: 1px solid var(--border); border-radius: 3px;
-      font-family: 'DM Sans', sans-serif; font-size: 0.87rem;
-      cursor: pointer; transition: all 0.18s; margin-top: 0.55rem;
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
     }
-    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
-    .spinner {
-      width: 17px; height: 17px; border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white; border-radius: 50%;
-      animation: spin 0.7s linear infinite; display: none; flex-shrink: 0;
+    .stat-item { text-align: left; }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 900;
+      color: var(--gold);
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .submit-error {
-      display: none; margin-top: 0.65rem; font-size: 0.8rem; color: var(--rust);
-      text-align: center; padding: 0.4rem 0.7rem; background: rgba(139,58,42,0.06); border-radius: 3px;
+    .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); font-weight: 500; }
+
+    /* ── SECTIONS COMMUNES ── */
+    section { padding: 5rem 5%; }
+
+    .section-eyebrow {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--emerald);
+      margin-bottom: 0.75rem;
     }
-    .success-view {
-      display: none; text-align: center; padding: 3rem 2rem;
-      animation: rise 0.55s cubic-bezier(0.22,1,0.36,1) both;
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      color: var(--charcoal);
+      line-height: 1.2;
+      margin-bottom: 1rem;
     }
-    .success-icon {
-      width: 68px; height: 68px; border-radius: 50%;
-      background: rgba(74,103,65,0.1); border: 2px solid var(--sage);
-      display: flex; align-items: center; justify-content: center; margin: 0 auto 1.4rem;
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 3rem;
     }
-    .success-view h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: var(--ink); margin-bottom: 0.8rem; }
-    .success-view p { color: #6B6157; font-size: 0.93rem; line-height: 1.7; }
-    .success-arabic { font-size: 1.3rem; color: var(--gold); margin: 0.8rem 0; direction: rtl; }
-    .form-note { text-align: center; font-size: 0.76rem; color: #9E9286; margin-top: 1.4rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
-    @media (max-width: 580px) {
-      .card-inner { padding: 1.8rem 1.4rem; }
-      .form-grid { grid-template-columns: 1fr; }
-      .field.full { grid-column: 1; }
-      h1 { font-size: 1.65rem; }
-      .level-grid { grid-template-columns: 1fr; }
-      .slot-grid { grid-template-columns: repeat(2,1fr); }
-      .riwayate-grid { grid-template-columns: 1fr; }
+
+    /* ── À PROPOS ── */
+    #apropos {
+      background: var(--white);
+    }
+
+    .apropos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .apropos-visual {
+      background: linear-gradient(135deg, var(--emerald), var(--indigo));
+      border-radius: 24px;
+      min-height: 560px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 3rem 2.5rem;
+      text-align: center;
+    }
+
+    .apropos-visual::before {
+      content: '﷽';
+      font-size: 3rem;
+      color: rgba(255,255,255,0.15);
+      position: absolute;
+      top: 1rem; right: 1.5rem;
+    }
+
+    .apropos-verse {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 2.6vw, 2rem);
+      color: var(--white);
+      direction: rtl;
+      line-height: 2.1;
+      margin-bottom: 1.75rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .apropos-verse-ref {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .apropos-verse-translation {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.75;
+      max-width: 560px;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .apropos-verse-comment {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.97);
+      line-height: 1.7;
+      max-width: 480px;
+      font-weight: 500;
+    }
+
+    .apropos-icon {
+      font-size: 5rem;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+    }
+
+    .values-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .values-list li {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      font-size: 0.95rem;
+    }
+    .values-list li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 0.7rem;
+      margin-top: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    /* ── COURS ── */
+    #cours { background: var(--cream); }
+
+    .cours-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .cours-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .cours-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      border-radius: 20px 20px 0 0;
+    }
+    .cours-card:nth-child(1)::after { background: var(--emerald); }
+    .cours-card:nth-child(2)::after { background: var(--gold); }
+    .cours-card:nth-child(3)::after { background: var(--indigo); }
+    .cours-card:nth-child(4)::after { background: #E05A2B; }
+
+    .cours-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+    .cours-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .cours-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .cours-card p { font-size: 0.9rem; color: var(--muted); margin-bottom: 1.2rem; }
+
+    .cours-tag {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      background: var(--gold-light);
+      color: var(--gold);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: linear-gradient(135deg, var(--charcoal) 0%, var(--indigo) 100%);
+      color: var(--white);
+    }
+
+    #contact .section-eyebrow { color: var(--gold); }
+    #contact .section-title { color: var(--white); }
+    #contact .section-subtitle { color: rgba(255,255,255,0.65); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
+
+    .contact-item {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .contact-item-icon {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .contact-item-text { font-size: 0.9rem; }
+    .contact-item-label { color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.1rem; }
+    .contact-item-value { color: var(--white); font-weight: 500; }
+    .contact-item-value a { color: var(--gold); text-decoration: none; }
+
+    .contact-form {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 2rem;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.7); }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.35); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--emerald); }
+    .form-group select option { background: var(--charcoal); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .btn-form {
+      background: var(--emerald);
+      color: var(--white);
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      align-self: flex-start;
+    }
+    .btn-form:hover { background: var(--emerald-dark); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0F0F1A;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem 5%;
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer strong { color: var(--white); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .logo-bismillah { display: none; }
+      .apropos-grid { grid-template-columns: 1fr; }
+      .apropos-visual { display: none; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
     }
   </style>
 </head>
 <body>
-<div class="card">
-  <div class="card-accent"></div>
-  <div class="card-inner">
 
-    <div id="formView">
-      <div class="header">
-        <div class="arabic-title">تَعَلَّمِ التَّجْوِيدَ وَالقِرَاءَة</div>
-        <div class="badge">✦ Inscription</div>
-        <h1>Tajwid & Lecture du Coran</h1>
-        <p class="subtitle">Choisissez votre niveau, votre creneau et rejoignez<br>l'une de nos sessions encadrees par des enseignants qualifies.</p>
-      </div>
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Maka<span>ranta</span></div>
+    <ul class="nav-links">
+      <li><a href="#accueil">Accueil</a></li>
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#cours">Nos cours</a></li>
+      <li><a href="https://karatou-m.github.io/Makaranta/reservation-creneaux.html" class="nav-cta-secondary">Réserver un créneau</a></li>
+      <li><a href="https://karatou-m.github.io/Makaranta/inscription-cours-tajwid.html" class="nav-cta">S'inscrire</a></li>
+    </ul>
+  </nav>
 
-      <div class="steps">
-        <div class="step-dot active" id="dot1"></div>
-        <div class="step-dot" id="dot2"></div>
-        <div class="step-dot" id="dot3"></div>
-      </div>
-
-      <form id="regForm" novalidate>
-
-        <!-- Etape 1 -->
-        <div id="step1">
-          <div class="divider"><span>Informations personnelles</span></div>
-          <div class="form-grid">
-            <div class="field" id="f-prenom">
-              <label class="field-label">Prenom <span>*</span></label>
-              <input type="text" name="prenom" placeholder="ex. Yasmine" />
-              <span class="error-msg">Ce champ est requis.</span>
-            </div>
-            <div class="field" id="f-nom">
-              <label class="field-label">Nom <span>*</span></label>
-              <input type="text" name="nom" placeholder="ex. Benali" />
-              <span class="error-msg">Ce champ est requis.</span>
-            </div>
-            <div class="field full" id="f-email">
-              <label class="field-label">Adresse e-mail <span>*</span></label>
-              <input type="email" name="email" placeholder="ex. yasmine@exemple.com" />
-              <span class="error-msg">Veuillez entrer un e-mail valide.</span>
-            </div>
-            <div class="field full">
-              <label class="field-label">Telephone (optionnel)</label>
-              <input type="tel" name="tel" placeholder="+33 6 00 00 00 00" />
-            </div>
-          </div>
-          <button type="button" class="btn-primary" onclick="goStep2()">Continuer</button>
-        </div>
-
-        <!-- Etape 2 -->
-        <div id="step2" style="display:none">
-          <div class="divider"><span>Niveau d'apprentissage</span></div>
-          <div class="level-grid">
-            <label class="level-card">
-              <input type="radio" name="niveau" value="Debutant" />
-              <span class="level-name">Debutant</span>
-            </label>
-            <label class="level-card">
-              <input type="radio" name="niveau" value="Intermediaire" />
-              <span class="level-name">Intermediaire</span>
-            </label>
-            <label class="level-card">
-              <input type="radio" name="niveau" value="Avance" />
-              <span class="level-name">Avance</span>
-            </label>
-          </div>
-          <span class="error-msg" id="niveau-err" style="display:none;margin-top:0.3rem">Veuillez selectionner votre niveau.</span>
-
-          <!-- Cours dynamique par niveau -->
-          <div id="cours-section" style="display:none;margin-top:1.8rem">
-            <div class="divider"><span>Cours</span></div>
-            <div class="level-grid" id="cours-grid"></div>
-            <span class="error-msg" id="cours-err" style="display:none;margin-top:0.3rem">Veuillez selectionner un cours.</span>
-          </div>
-
-          <!-- Riwayate -->
-          <div class="divider" style="margin-top:1.8rem"><span>Riwayate</span></div>
-          <div class="riwayate-grid">
-            <label class="riwayate-card">
-              <input type="radio" name="riwayate" value="Hafs an Asim" />
-              <span class="riwayate-name">Hafs</span>
-              <span class="riwayate-sub">'an 'Asim</span>
-            </label>
-            <label class="riwayate-card">
-              <input type="radio" name="riwayate" value="Shu'ba an Asim" />
-              <span class="riwayate-name">Shu'ba</span>
-              <span class="riwayate-sub">'an 'Asim</span>
-            </label>
-            <label class="riwayate-card">
-              <input type="radio" name="riwayate" value="Warsh an Nafi - Al-Asbahani" />
-              <span class="riwayate-name">Warsh — Al-Asbahani</span>
-              <span class="riwayate-sub">'an Nafi'</span>
-            </label>
-            <label class="riwayate-card">
-              <input type="radio" name="riwayate" value="Warsh an Nafi - Al-Azraq" />
-              <span class="riwayate-name">Warsh — Al-Azraq</span>
-              <span class="riwayate-sub">'an Nafi'</span>
-            </label>
-            <label class="riwayate-card">
-              <input type="radio" name="riwayate" value="Qalun an Nafi" />
-              <span class="riwayate-name">Qalun</span>
-              <span class="riwayate-sub">'an Nafi'</span>
-            </label>
-          </div>
-          <span class="error-msg" id="riwayate-err" style="display:none;margin-top:0.3rem">Veuillez selectionner une riwayate.</span>
-
-          <div class="divider" style="margin-top:1.8rem"><span>Format du cours</span></div>
-          <div class="form-grid">
-            <div class="field full" id="f-format">
-              <label class="field-label">Format <span>*</span></label>
-              <select name="format">
-                <option value="">-- Selectionner --</option>
-                <option value="En ligne - Session individuelle">En ligne - Session individuelle (1:1)</option>
-                <option value="En ligne - Groupe max 5">En ligne - Groupe (max 5 apprenants)</option>
-                <option value="Enregistrements - A son propre rythme">Enregistrements - A son propre rythme</option>
-              </select>
-              <span class="error-msg">Veuillez selectionner un format.</span>
-            </div>
-          </div>
-
-          <div class="divider" style="margin-top:1.8rem"><span>Creneau horaire prefere</span></div>
-          <div class="slot-grid">
-            <label class="slot-btn"><input type="radio" name="horaire" value="Lundi 18h-20h" /><span class="slot-day">Lundi</span><span class="slot-time">18h-20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Mardi 18h-20h" /><span class="slot-day">Mardi</span><span class="slot-time">18h-20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Mercredi 18h-20h" /><span class="slot-day">Mercredi</span><span class="slot-time">18h-20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Jeudi 18h-20h" /><span class="slot-day">Jeudi</span><span class="slot-time">18h-20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Vendredi 18h-20h" /><span class="slot-day">Vendredi</span><span class="slot-time">18h-20h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Samedi 9h-11h" /><span class="slot-day">Samedi</span><span class="slot-time">9h-11h</span></label>
-            <label class="slot-btn"><input type="radio" name="horaire" value="Dimanche 15h-17h" /><span class="slot-day">Dimanche</span><span class="slot-time">15h-17h</span></label>
-          </div>
-          <span class="error-msg" id="horaire-err" style="display:none;margin-top:0.3rem">Veuillez choisir un creneau horaire.</span>
-
-          <div style="margin-top:1.5rem">
-            <label class="field-label">Message ou questions (optionnel)</label>
-            <textarea name="message" style="margin-top:0.45rem" placeholder="Partagez vos objectifs ou toute information utile..."></textarea>
-          </div>
-
-          <button type="button" class="btn-primary" onclick="goStep3()">Continuer</button>
-          <button type="button" class="btn-ghost" onclick="goStep1()">Retour</button>
-        </div>
-
-        <!-- Etape 3 -->
-        <div id="step3" style="display:none">
-          <div class="divider"><span>Recapitulatif de votre inscription</span></div>
-          <div class="recap-box" id="recap"></div>
-
-          <label class="check-row">
-            <input type="checkbox" id="cgv" />
-            <span class="check-box">
-              <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="check-text">J'accepte les <a href="#">conditions generales</a> et la <a href="#">politique de confidentialite</a>.<span style="color:var(--rust)"> *</span></span>
-          </label>
-          <span class="error-msg" id="cgv-err" style="display:none;margin-left:1.6rem">Vous devez accepter les conditions.</span>
-
-          <label class="check-row" style="margin-top:0.2rem">
-            <input type="checkbox" id="newsletter" />
-            <span class="check-box">
-              <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="check-text">Je souhaite recevoir les actualites et offres speciales par e-mail.</span>
-          </label>
-
-          <button type="submit" class="btn-primary" id="btnSubmit">
-            <span id="btnLabel">Confirmer mon inscription</span>
-            <div class="spinner" id="spinner"></div>
-          </button>
-          <div class="submit-error" id="submitError"></div>
-          <button type="button" class="btn-ghost" onclick="goStep2()">Retour</button>
-        </div>
-
-      </form>
-      <p class="form-note">Vos donnees sont securisees et ne sont jamais partagees avec des tiers.</p>
+  <!-- HERO -->
+  <section id="accueil">
+    <div class="hero-bg-slides">
+      <div class="hero-bg-slide active"></div>
+      <div class="hero-bg-slide"></div>
     </div>
-
-    <!-- Success -->
-    <div class="success-view" id="successView">
-      <div class="success-icon">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 6 9 17l-5-5"/>
-        </svg>
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-badge">✦ École de Coran & Tajwid</div>
+      <div class="hero-bismillah">﷽<span class="hero-bismillah-line2">فَاقْرَءُوا مَا تَيَسَّرَ مِنَ الْقُرْآنِ</span></div>
+      <h1>Apprendre le Coran,<br><em>un verset à la fois</em></h1>
+      <p>Makaranta propose des cours de récitation du Coran et de Tajwid pour enfants et adultes, dans un cadre bienveillant et structuré.</p>
+      <div class="hero-actions">
+        <a href="https://karatou-m.github.io/Makaranta/inscription-cours-tajwid.html" class="btn-primary">S'inscrire maintenant</a>
+        <a href="#cours" class="btn-secondary">Découvrir les cours</a>
       </div>
-      <h2>Barak Allahu Fik !</h2>
-      <div class="success-arabic">بَارَكَ اللَّهُ فِيكَ</div>
-      <p>Votre inscription a bien ete enregistree.<br>
-      Un e-mail de confirmation vous a ete envoye.<br><br>
-      <strong style="color:var(--ink)">Qu'Allah facilite votre apprentissage, Amine !</strong></p>
-      <br>
-      <button class="btn-ghost" style="max-width:240px;margin:0 auto" onclick="resetForm()">Nouvelle inscription</button>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">3+</div>
+          <div class="stat-label">Niveaux disponibles</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">En ligne</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">Tous</div>
+          <div class="stat-label">Niveaux acceptés</div>
+        </div>
+      </div>
     </div>
+  </section>
 
-  </div>
-</div>
+  <!-- À PROPOS -->
+  <section id="apropos">
+    <div class="apropos-grid">
+      <div class="apropos-visual">
+        <div class="apropos-verse-ref">Sourate Al-Muzzammil — 73:20</div>
+        <div class="apropos-verse">فَاقْرَءُوا مَا تَيَسَّرَ مِنَ الْقُرْآنِ ۚ عَلِمَ أَنْ سَيَكُونُ مِنْكُمْ مَرْضَىٰ ۙ وَآخَرُونَ يَضْرِبُونَ فِي الْأَرْضِ يَبْتَغُونَ مِنْ فَضْلِ اللَّهِ ۙ وَآخَرُونَ يُقَاتِلُونَ فِي سَبِيلِ اللَّهِ ۖ فَاقْرَءُوا مَا تَيَسَّرَ مِنْهُ</div>
+        <p class="apropos-verse-translation">« Lisez-en donc ce qui vous est facile [du Coran]. Il sait que parmi vous il y aura des malades, d'autres qui voyageront à travers le monde, en quête de la grâce d'Allah, et d'autres encore qui combattront dans le sentier d'Allah. Lisez-en donc ce qui vous est facile. »</p>
+        <p class="apropos-verse-comment">Allah connaît ta situation et tes excuses (travail, études, voyages, maladies) mais tu dois garder le lien avec le Coran.</p>
+      </div>
+      <div>
+        <div class="section-eyebrow">Notre mission</div>
+        <h2 class="section-title">Une école fondée sur la transmission</h2>
+        <p style="color: var(--muted); margin-bottom: 1rem;">Makaranta — qui signifie « école » en haoussa — est née de la volonté de rendre l'enseignement coranique accessible à tous, quel que soit le niveau de départ.</p>
+        <p style="color: var(--muted); margin-bottom: 1.5rem;">Tous nos enseignants sont titulaires d'une <strong style="color: var(--emerald);">Ijaza</strong> — certification traditionnelle attestant d'une chaîne de transmission ininterrompue jusqu'au Prophète ﷺ. Une garantie de qualité et d'authenticité pour chaque élève.</p>
 
-<script>
-  /* == CONFIGURATION == */
-  var SUPABASE_URL      = 'https://mssqgelnplvvvuflrrau.supabase.co';
-  var SUPABASE_KEY      = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zc3FnZWxucGx2dnZ1ZmxycmF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzMTkzODQsImV4cCI6MjA5Mzg5NTM4NH0.GxuDdw1Zo9WnQYFvDT9KPAOwlwXqet-ZvE2fEaJiQhs';
-  var SUPABASE_TABLE    = 'inscriptions';
-  var EDGE_FUNCTION_URL = 'https://mssqgelnplvvvuflrrau.supabase.co/functions/v1/send-inscription-pdf';
+        <!-- Ijaza badge -->
+        <div style="display:inline-flex; align-items:center; gap:0.75rem; background:var(--gold-light); border:1px solid var(--gold); border-radius:12px; padding:0.75rem 1.25rem; margin-bottom:1.5rem;">
+          <span style="font-size:1.5rem;">🏅</span>
+          <div>
+            <div style="font-size:0.7rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--gold);">Garantie qualité</div>
+            <div style="font-size:0.85rem; font-weight:600; color:var(--charcoal);">Enseignants certifiés Ijaza</div>
+          </div>
+        </div>
 
-  var EMAILJS_SERVICE_ID  = 'service_jgm1nvl';
-  var EMAILJS_TEMPLATE_ID = 'template_e24ugve';
-  var EMAILJS_PUBLIC_KEY  = 'WixSITjIL4-G5Obzn';
+        <ul class="values-list">
+          <li>Chaîne de transmission authentique et vérifiée</li>
+          <li>Pédagogie progressive adaptée à chaque élève</li>
+          <li>Enseignement du Tajwid selon les règles traditionnelles</li>
+          <li>Suivi personnalisé et évaluation régulière</li>
+          <li>Cours pour enfants dès 5 ans et adultes</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  emailjs.init(EMAILJS_PUBLIC_KEY);
+  <!-- COURS -->
+  <section id="cours">
+    <div class="section-eyebrow">Ce que nous enseignons</div>
+    <h2 class="section-title">Nos cours</h2>
+    <p class="section-subtitle">Des programmes structurés pour progresser à votre rythme, du débutant au récitant confirmé.</p>
+    <div class="cours-grid">
+      <div class="cours-card">
+        <span class="cours-icon">🌱</span>
+        <h3>Coran Débutant</h3>
+        <p>Apprentissage de l'alphabet arabe, lecture des lettres et premiers versets. Idéal pour les débutants complets.</p>
+        <span class="cours-tag">Dès 5 ans</span>
+      </div>
+      <div class="cours-card">
+        <span class="cours-icon">📖</span>
+        <h3>Lecture Courante</h3>
+        <p>Amélioration de la fluidité de lecture et introduction aux règles fondamentales du Tajwid.</p>
+        <span class="cours-tag">Intermédiaire</span>
+      </div>
+      <div class="cours-card">
+        <span class="cours-icon">🎙️</span>
+        <h3>Tajwid Avancé</h3>
+        <p>Maîtrise complète des règles de Tajwid, application pratique sur les sourates complètes.</p>
+        <span class="cours-tag">Avancé</span>
+      </div>
+      <div class="cours-card">
+        <span class="cours-icon">🏆</span>
+        <h3>Mémorisation (Hifz)</h3>
+        <p>Programme de mémorisation progressive du Coran avec révisions régulières et suivi individuel.</p>
+        <span class="cours-tag">Tous niveaux</span>
+      </div>
+    </div>
+  </section>
 
-  var fd = {};
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div>
+        <div class="section-eyebrow">Rejoindre Makaranta</div>
+        <h2 class="section-title">Inscrivez-vous</h2>
+        <p class="section-subtitle">Prenez contact avec nous pour démarrer votre parcours ou celui de votre enfant.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-item-icon">✉️</div>
+            <div class="contact-item-text">
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-value"><a href="mailto:contact@makaranta-edu.com">contact@makaranta-edu.com</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📋</div>
+            <div class="contact-item-text">
+              <div class="contact-item-label">Inscription en ligne</div>
+              <div class="contact-item-value"><a href="mailto:inscription@makaranta-edu.com">inscription@makaranta-edu.com</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">ℹ️</div>
+            <div class="contact-item-text">
+              <div class="contact-item-label">Informations</div>
+              <div class="contact-item-value"><a href="mailto:info@makaranta-edu.com">info@makaranta-edu.com</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prénom</label>
+            <input type="text" placeholder="Votre prénom" />
+          </div>
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" placeholder="Votre nom" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="votre@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Cours souhaité</label>
+          <select>
+            <option value="">Sélectionner un cours</option>
+            <option>Coran Débutant</option>
+            <option>Lecture Courante</option>
+            <option>Tajwid Avancé</option>
+            <option>Mémorisation (Hifz)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message (optionnel)</label>
+          <textarea placeholder="Questions, informations complémentaires..."></textarea>
+        </div>
+        <button class="btn-form" onclick="window.location.href='https://karatou-m.github.io/Makaranta/inscription-cours-tajwid.html'">Envoyer ma demande →</button>
+      </div>
+    </div>
+  </section>
 
-  /* == NAVIGATION == */
-  function setStep(n) {
-    for (var i = 1; i <= 3; i++) {
-      document.getElementById('step' + i).style.display = (i === n) ? '' : 'none';
-      document.getElementById('dot' + i).classList.toggle('active', i <= n);
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 <strong>Makaranta</strong> — École de Coran et Tajwid &nbsp;·&nbsp; <a href="mailto:contact@makaranta-edu.com">contact@makaranta-edu.com</a></p>
+  </footer>
 
-  function chkRequired(wrapId, fieldName) {
-    var el = document.querySelector('[name="' + fieldName + '"]');
-    var ok = el && el.value.trim() !== '';
-    document.getElementById(wrapId).classList.toggle('has-error', !ok);
-    return ok;
-  }
-
-  function chkEmail(wrapId) {
-    var v = document.querySelector('[name="email"]').value.trim();
-    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    document.getElementById(wrapId).classList.toggle('has-error', !ok);
-    return ok;
-  }
-
-  function goStep1() { setStep(1); }
-
-  function goStep2() {
-    var ok = chkRequired('f-prenom', 'prenom') &
-             chkRequired('f-nom', 'nom') &
-             chkEmail('f-email');
-    if (!ok) return;
-    fd.prenom = document.querySelector('[name=prenom]').value.trim();
-    fd.nom    = document.querySelector('[name=nom]').value.trim();
-    fd.email  = document.querySelector('[name=email]').value.trim();
-    fd.tel    = document.querySelector('[name=tel]').value.trim();
-    setStep(2);
-  }
-
-  /* == COURS PAR NIVEAU == */
-  var coursParNiveau = {
-    'Debutant':      ['Tajwid', 'Alphabetisation', 'Programme individuel'],
-    'Intermediaire': ['Lecture debutant', 'Alphabetisation', 'Programme individuel'],
-    'Avance':        ['Memorisation - Hifz', 'Programme individuel']
-  };
-
-  document.querySelectorAll('[name=niveau]').forEach(function(radio) {
-    radio.addEventListener('change', function() {
-      var grid    = document.getElementById('cours-grid');
-      var section = document.getElementById('cours-section');
-      var cours   = coursParNiveau[this.value] || [];
-      grid.innerHTML = cours.map(function(c) {
-        return '<label class="level-card">' +
-          '<input type="radio" name="cours" value="' + c + '" />' +
-          '<span class="level-name">' + c + '</span>' +
-        '</label>';
-      }).join('');
-      section.style.display = '';
-      document.getElementById('cours-err').style.display = 'none';
-    });
-  });
-
-  function goStep3() {
-    var niv  = document.querySelector('[name=niveau]:checked');
-    var crs  = document.querySelector('[name=cours]:checked');
-    var riw  = document.querySelector('[name=riwayate]:checked');
-    var hor  = document.querySelector('[name=horaire]:checked');
-    var fmt  = chkRequired('f-format', 'format');
-    document.getElementById('niveau-err').style.display   = niv ? 'none' : 'block';
-    document.getElementById('cours-err').style.display    = crs ? 'none' : 'block';
-    document.getElementById('riwayate-err').style.display = riw ? 'none' : 'block';
-    document.getElementById('horaire-err').style.display  = hor ? 'none' : 'block';
-    if (!niv || !crs || !riw || !hor || !fmt) return;
-    fd.niveau    = niv.value;
-    fd.cours     = crs.value;
-    fd.riwayate  = riw.value;
-    fd.format    = document.querySelector('[name=format]').value;
-    fd.horaire   = hor.value;
-    fd.message   = document.querySelector('[name=message]').value.trim();
-    buildRecap();
-    setStep(3);
-  }
-
-  function buildRecap() {
-    var rows = [
-      ['Nom',      fd.prenom + ' ' + fd.nom],
-      ['E-mail',   fd.email],
-      ['Niveau',   fd.niveau],
-      ['Cours',    fd.cours],
-      ['Riwayate', fd.riwayate],
-      ['Format',   fd.format],
-      ['Horaire',  fd.horaire],
-    ];
-    if (fd.tel)     rows.splice(2, 0, ['Telephone', fd.tel]);
-    if (fd.message) rows.push(['Message', fd.message]);
-    document.getElementById('recap').innerHTML = rows
-      .map(function(r) {
-        return '<div class="recap-row"><span class="recap-label">' + r[0] + ' :</span><span>' + r[1] + '</span></div>';
-      }).join('');
-  }
-
-  /* == GENERATION PDF == */
-  function generatePDFBase64() {
-    var doc = new window.jspdf.jsPDF();
-    var gold  = [200, 150, 62];
-    var ink   = [26, 22, 18];
-    var sage  = [74, 103, 65];
-    var y = 20;
-
-    /* En-tete */
-    doc.setFillColor(gold[0], gold[1], gold[2]);
-    doc.rect(0, 0, 210, 8, 'F');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.setTextColor(ink[0], ink[1], ink[2]);
-    doc.text('Fiche d\'inscription', 105, 25, { align: 'center' });
-
-    doc.setFontSize(12);
-    doc.setTextColor(gold[0], gold[1], gold[2]);
-    doc.text('Tajwid & Lecture du Coran', 105, 33, { align: 'center' });
-
-    /* Ligne separatrice */
-    doc.setDrawColor(gold[0], gold[1], gold[2]);
-    doc.setLineWidth(0.5);
-    doc.line(15, 38, 195, 38);
-
-    y = 50;
-    var rows = [
-      ['Prenom', fd.prenom],
-      ['Nom', fd.nom],
-      ['E-mail', fd.email],
-      ['Niveau', fd.niveau],
-      ['Cours', fd.cours],
-      ['Riwayate', fd.riwayate],
-      ['Format', fd.format],
-      ['Horaire', fd.horaire],
-    ];
-    if (fd.tel)     rows.splice(2, 0, ['Telephone', fd.tel]);
-    if (fd.message) rows.push(['Message', fd.message]);
-
-    rows.forEach(function(r, i) {
-      if (i % 2 === 0) {
-        doc.setFillColor(250, 247, 242);
-        doc.rect(15, y - 5, 180, 10, 'F');
-      }
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.setTextColor(sage[0], sage[1], sage[2]);
-      doc.text(r[0] + ' :', 20, y);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(ink[0], ink[1], ink[2]);
-      doc.text(r[1] || '-', 70, y);
-      y += 12;
-    });
-
-    /* Date */
-    doc.setFontSize(8);
-    doc.setTextColor(158, 146, 134);
-    var now = new Date();
-    doc.text('Inscription du ' + now.toLocaleDateString('fr-FR') + ' a ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}), 15, 280);
-
-    /* Pied de page */
-    doc.setFillColor(gold[0], gold[1], gold[2]);
-    doc.rect(0, 287, 210, 10, 'F');
-
-    return doc.output('datauristring').split(',')[1];
-  }
-
-  function downloadPDF() {
-    var doc = new window.jspdf.jsPDF();
-    var gold  = [200, 150, 62];
-    var ink   = [26, 22, 18];
-    var sage  = [74, 103, 65];
-    var y = 20;
-
-    doc.setFillColor(gold[0], gold[1], gold[2]);
-    doc.rect(0, 0, 210, 8, 'F');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.setTextColor(ink[0], ink[1], ink[2]);
-    doc.text('Fiche d\'inscription', 105, 25, { align: 'center' });
-
-    doc.setFontSize(12);
-    doc.setTextColor(gold[0], gold[1], gold[2]);
-    doc.text('Tajwid & Lecture du Coran', 105, 33, { align: 'center' });
-
-    doc.setDrawColor(gold[0], gold[1], gold[2]);
-    doc.setLineWidth(0.5);
-    doc.line(15, 38, 195, 38);
-
-    y = 50;
-    var rows = [
-      ['Prenom', fd.prenom],
-      ['Nom', fd.nom],
-      ['E-mail', fd.email],
-      ['Niveau', fd.niveau],
-      ['Cours', fd.cours],
-      ['Riwayate', fd.riwayate],
-      ['Format', fd.format],
-      ['Horaire', fd.horaire],
-    ];
-    if (fd.tel)     rows.splice(2, 0, ['Telephone', fd.tel]);
-    if (fd.message) rows.push(['Message', fd.message]);
-
-    rows.forEach(function(r, i) {
-      if (i % 2 === 0) {
-        doc.setFillColor(250, 247, 242);
-        doc.rect(15, y - 5, 180, 10, 'F');
-      }
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.setTextColor(sage[0], sage[1], sage[2]);
-      doc.text(r[0] + ' :', 20, y);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(ink[0], ink[1], ink[2]);
-      doc.text(r[1] || '-', 70, y);
-      y += 12;
-    });
-
-    var now = new Date();
-    doc.setFontSize(8);
-    doc.setTextColor(158, 146, 134);
-    doc.text('Inscription du ' + now.toLocaleDateString('fr-FR') + ' a ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}), 15, 280);
-
-    doc.setFillColor(gold[0], gold[1], gold[2]);
-    doc.rect(0, 287, 210, 10, 'F');
-
-    doc.save('inscription-tajwid-' + fd.nom + '-' + fd.prenom + '.pdf');
-  }
-
-  /* == SUPABASE == */
-  function insertToSupabase(payload) {
-    return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(payload)
-    }).then(function(res) {
-      if (!res.ok) {
-        return res.json().then(function(e) { throw new Error(e.message || 'Erreur Supabase'); });
-      }
-    });
-  }
-
-  /* == EMAILJS — confirmation etudiant == */
-  function sendConfirmationEmail() {
-    return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_email: fd.email,
-      name:     fd.prenom + ' ' + fd.nom,
-      prenom:   fd.prenom,
-      nom:      fd.nom,
-      email:    fd.email,
-      niveau:   fd.niveau,
-      cours:    fd.cours,
-      riwayate: fd.riwayate,
-      format:   fd.format,
-      horaire:  fd.horaire,
-      message:  fd.message || '-'
-    });
-  }
-
-  /* == EDGE FUNCTION — envoi PDF aux enseignants == */
-  function sendPDFToTeachers(pdfBase64) {
-    return fetch(EDGE_FUNCTION_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + SUPABASE_KEY
-      },
-      body: JSON.stringify({
-        pdf_base64: pdfBase64,
-        inscription: {
-          prenom:   fd.prenom,
-          nom:      fd.nom,
-          email:    fd.email,
-          niveau:   fd.niveau,
-          cours:    fd.cours,
-          riwayate: fd.riwayate,
-          format:   fd.format,
-          horaire:  fd.horaire,
-          message:  fd.message || '-'
-        }
-      })
-    });
-  }
-
-  /* == SOUMISSION == */
-  document.getElementById('regForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var cgvErr = document.getElementById('cgv-err');
-    if (!document.getElementById('cgv').checked) {
-      cgvErr.style.display = 'block';
-      return;
-    }
-    cgvErr.style.display = 'none';
-
-    var btn     = document.getElementById('btnSubmit');
-    var lbl     = document.getElementById('btnLabel');
-    var spinner = document.getElementById('spinner');
-    var errBox  = document.getElementById('submitError');
-
-    btn.disabled          = true;
-    lbl.textContent       = 'Enregistrement en cours...';
-    spinner.style.display = 'block';
-    errBox.style.display  = 'none';
-
-    var payload = {
-      prenom:     fd.prenom,
-      nom:        fd.nom,
-      email:      fd.email,
-      telephone:  fd.tel || null,
-      niveau:     fd.niveau,
-      cours:      fd.cours,
-      riwayate:   fd.riwayate,
-      format:     fd.format,
-      horaire:    fd.horaire,
-      message:    fd.message || null,
-      newsletter: document.getElementById('newsletter').checked,
-      inscrit_le: new Date().toISOString()
-    };
-
-    insertToSupabase(payload)
-      .then(function() {
-        document.getElementById('btnSubmit').disabled = false;
-        document.getElementById('btnLabel').textContent = 'Confirmer mon inscription';
-        document.getElementById('spinner').style.display = 'none';       
-        /* Email confirmation etudiant */
-        sendConfirmationEmail().catch(function(err) { console.log('EmailJS erreur:', err); });
-        /* PDF aux enseignants en arriere-plan */
-        try {
-          var pdfBase64 = generatePDFBase64();
-          sendPDFToTeachers(pdfBase64).catch(function(err) { console.log('PDF enseignants erreur:', err); });
-        } catch(e) {
-          console.log('PDF generation erreur:', e);
-        }
-        /* Afficher succes */
-        document.getElementById('formView').style.display    = 'none';
-        document.getElementById('successView').style.display = 'block';
-      })
-      .catch(function(err) {
-        errBox.textContent   = 'Erreur : ' + (err.message || 'inconnue');
-        errBox.style.display = 'block';
-        btn.disabled          = false;
-        lbl.textContent       = 'Confirmer mon inscription';
-        spinner.style.display = 'none';
-      });
-  });
-
-function resetForm() {
-  document.getElementById('regForm').reset();
-  document.getElementById('cours-section').style.display = 'none';
-  document.getElementById('formView').style.display    = 'block';
-  document.getElementById('successView').style.display = 'none';
-  var btn     = document.getElementById('btnSubmit');
-  var lbl     = document.getElementById('btnLabel');
-  var spinner = document.getElementById('spinner');
-  btn.disabled          = false;
-  lbl.textContent       = 'Confirmer mon inscription';
-  spinner.style.display = 'none';
-  fd = {};
-  setStep(1);
-}
-
-</script>
+  <script>
+    // Alternance chapelet / tablette coranique
+    const slides = document.querySelectorAll('.hero-bg-slide');
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 5000);
+  </script>
 </body>
 </html>
