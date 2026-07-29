@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription Stage Été 2026 | Makaranta</title>
+
+<!--
+  ============================================================
+  MAKARANTA — Formulaire d'inscription au Stage Coran
+  ============================================================
+  UN SEUL RÉGLAGE À FAIRE avant la mise en ligne :
+
+  Ligne ~ (chercher "ENDPOINT") dans le <script> en bas de page.
+  Par défaut le formulaire envoie les réponses par e-mail via
+  FormSubmit (service gratuit, aucun serveur à installer) :
+
+      const ENDPOINT = "https://formsubmit.co/ajax/inscriptions@makaranta-edu.com";
+
+  Activation en 1 fois : mets la page en ligne, envoie un premier
+  test depuis le formulaire, puis clique le lien de confirmation
+  reçu sur inscriptions@makaranta-edu.com. Les envois suivants
+  arrivent directement dans la boîte.
+
+  ACCUSÉ DE RÉCEPTION AUTOMATIQUE : le champ _autoresponse (dans le
+  formulaire, juste avant _subject) contient le message envoyé
+  automatiquement au parent. Remplace LIEN_PAYPAL_A_REMPLACER par
+  ton lien PayPal.me avant la mise en ligne.
+
+  PROFESSEURS EN COPIE : champ _cc, juste au-dessus de _subject.
+  Remplace PROF1@... / PROF2@... par les vraies adresses, séparées
+  par une virgule. Supprime la ligne pour n'avoir aucune copie.
+
+  Autre solution possible : remplacer ENDPOINT par une URL
+  Formspree, Brevo, ou l'API du formulaire de ton site.
+  ============================================================
+-->
+
+<style>
+  :root{
+    --bg:#170707; --card:#200a0a; --card2:#2a0e0e;
+    --gold:#c9973a; --gold-lt:#e8b355; --cream:#f3e9d8;
+    --muted:#9c8b76; --line:#4a3418;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:linear-gradient(175deg,#2e0e0e 0%,#1c0909 40%,#140606 100%);
+    min-height:100vh; color:var(--cream);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    padding:28px 16px 60px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto}
+
+  /* ---------- en-tête ---------- */
+  header{text-align:center;margin-bottom:26px}
+  .brand{color:var(--gold);letter-spacing:9px;font-size:13px;text-decoration:none;display:inline-block}
+  .back{display:block;margin-top:22px;text-align:center;color:var(--muted);font-size:14px;text-decoration:none}
+  .back:hover{color:var(--gold)}
+  .basmala{font-size:24px;color:var(--gold-lt);direction:rtl;margin:14px 0 10px;
+           font-family:"Traditional Arabic","Amiri",serif;line-height:1.8}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:700;
+     line-height:1.2;color:#fdf6e8}
+  .lead{color:var(--muted);font-size:15px;margin-top:10px;font-style:italic}
+
+  /* ---------- rappel du stage ---------- */
+  .facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:22px 0 30px}
+  .chip{border:1px solid var(--line);border-radius:999px;padding:7px 14px;
+        font-size:13.5px;color:#d6c3a5;background:rgba(255,255,255,.03)}
+  .chip strong{color:var(--gold-lt)}
+
+  /* ---------- carte formulaire ---------- */
+  .panel{background:var(--card);border:1px solid #3a2a14;border-radius:18px;
+         padding:26px 22px;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+  fieldset{border:0;margin-bottom:26px}
+  legend{color:var(--gold);letter-spacing:4px;font-size:11.5px;
+         padding-bottom:12px;width:100%;border-bottom:1px solid var(--line);margin-bottom:18px}
+
+  label{display:block;font-size:14px;color:#d6c3a5;margin-bottom:6px}
+  .req{color:var(--gold)}
+  .field{margin-bottom:16px}
+  .row{display:flex;gap:12px}
+  .row .field{flex:1}
+  input,select,textarea{
+    width:100%;background:#170707;border:1px solid #4a3418;border-radius:10px;
+    padding:12px 13px;color:var(--cream);font-size:15px;font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  textarea{min-height:88px;resize:vertical}
+  input::placeholder,textarea::placeholder{color:#6f6152}
+  input:focus,select:focus,textarea:focus{
+    outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,151,58,.18)}
+  .hint{font-size:12.5px;color:#7d6f5e;margin-top:6px}
+
+  /* ---------- créneaux (élément signature) ---------- */
+  .slots{display:grid;gap:10px}
+  .slot{position:relative}
+  .slot input{position:absolute;opacity:0;width:0;height:0}
+  .slot span{
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+    border:1px solid #4a3418;border-radius:12px;padding:14px 16px;cursor:pointer;
+    background:rgba(255,255,255,.025);transition:border-color .15s,background .15s}
+  .slot .d{font-size:15.5px;font-weight:700;color:#fdf6e8}
+  .slot .h{font-family:Georgia,serif;font-size:20px;color:var(--gold-lt);font-weight:700}
+  .slot .t{font-size:11px;letter-spacing:2px;color:#8d7c66;margin-left:auto}
+  .slot input:checked + span{border-color:var(--gold);background:rgba(201,151,58,.12)}
+  .slot input:focus-visible + span{box-shadow:0 0 0 3px rgba(201,151,58,.25)}
+
+  /* ---------- consentement ---------- */
+  .check{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:#d6c3a5;line-height:1.5}
+  .check input{width:18px;height:18px;flex:0 0 18px;margin-top:2px;accent-color:var(--gold)}
+
+  /* ---------- bouton ---------- */
+  button{
+    width:100%;margin-top:6px;padding:15px;border:0;border-radius:12px;cursor:pointer;
+    background:linear-gradient(90deg,#b5842f,#e0a63f,#b5842f);
+    color:#2a1206;font-size:16.5px;font-weight:700;letter-spacing:.3px;
+    font-family:inherit;transition:filter .15s}
+  button:hover{filter:brightness(1.08)}
+  button:disabled{filter:grayscale(.5) brightness(.8);cursor:wait}
+  .foot{text-align:center;color:var(--muted);font-size:13px;margin-top:18px;line-height:1.6}
+  .foot a{color:var(--gold)}
+
+  /* ---------- messages ---------- */
+  .error{display:none;margin-top:14px;border:1px solid #7a3b2a;background:rgba(122,59,42,.18);
+         border-radius:10px;padding:12px 14px;font-size:14px;color:#f0c9bb}
+  .error a{color:var(--gold-lt)}
+  .done{display:none;text-align:center;padding:14px 4px}
+  .done .tick{font-size:40px;color:var(--gold-lt)}
+  .done h2{font-family:Georgia,serif;font-size:26px;margin:12px 0 10px;color:#fdf6e8}
+  .done p{color:#d6c3a5;font-size:15px;line-height:1.65}
+  .done .next{margin-top:18px;border:1px solid var(--line);border-radius:12px;
+              padding:16px;text-align:left;background:rgba(255,255,255,.03)}
+  .done .next b{color:var(--gold-lt)}
+
+  @media (max-width:520px){
+    h1{font-size:28px}
+    .row{flex-direction:column;gap:0}
+    .panel{padding:22px 16px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <a class="brand" href="https://makaranta-edu.com/">MAKARANTA</a>
+    <div class="basmala">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <h1>Inscription Stage Été 2026</h1>
+    <p class="lead">Lecture, mémorisation et maîtrise du Tajwid</p>
+  </header>
+
+  <div class="facts">
+    <div class="chip"><strong>05 → 20 août</strong></div>
+    <div class="chip">Dès <strong>10 ans</strong></div>
+    <div class="chip">Zoom / Teams</div>
+    <div class="chip">2 × 20 min par semaine</div>
+    <div class="chip"><strong>20 €</strong> tout compris</div>
+  </div>
+
+  <div class="panel">
+
+    <form id="f" novalidate>
+
+      <fieldset>
+        <legend>L'ÉLÈVE</legend>
+        <div class="row">
+          <div class="field">
+            <label for="prenom">Prénom <span class="req">*</span></label>
+            <input id="prenom" name="Prénom de l'élève" required autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label for="nom">Nom <span class="req">*</span></label>
+            <input id="nom" name="Nom de l'élève" required autocomplete="family-name">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="age">Âge <span class="req">*</span></label>
+            <input id="age" name="Âge" type="number" min="10" max="25" required placeholder="10">
+          </div>
+          <div class="field">
+            <label for="niveau">Niveau en lecture <span class="req">*</span></label>
+            <select id="niveau" name="Niveau" required>
+              <option value="">Choisir…</option>
+              <option>Débutant — apprend encore à déchiffrer</option>
+              <option>Intermédiaire — lit avec hésitation</option>
+              <option>Avancé — lit couramment</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>LE RESPONSABLE</legend>
+        <div class="field">
+          <label for="parent">Nom du parent ou responsable <span class="req">*</span></label>
+          <input id="parent" name="Responsable" required>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="mail">E-mail <span class="req">*</span></label>
+            <input id="mail" name="email" type="email" required autocomplete="email" placeholder="nom@exemple.com">
+          </div>
+          <div class="field">
+            <label for="tel">Téléphone / WhatsApp <span class="req">*</span></label>
+            <input id="tel" name="Téléphone" type="tel" required placeholder="+33 6 00 00 00 00">
+          </div>
+        </div>
+        <div class="field">
+          <label for="pays">Pays et fuseau horaire</label>
+          <input id="pays" name="Pays / fuseau" placeholder="France (heure de Paris)">
+          <div class="hint">Pour caler les séances si l'élève ne suit pas depuis la France.</div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>LE CRÉNEAU SOUHAITÉ</legend>
+        <div class="slots">
+          <label class="slot">
+            <input type="radio" name="Créneau" value="Lundi à jeudi — 9h00" required>
+            <span><span class="d">Lundi → Jeudi</span><span class="h">9h00</span><span class="t">MATIN</span></span>
+          </label>
+          <label class="slot">
+            <input type="radio" name="Créneau" value="Lundi à jeudi — 20h00">
+            <span><span class="d">Lundi → Jeudi</span><span class="h">20h00</span><span class="t">SOIR</span></span>
+          </label>
+          <label class="slot">
+            <input type="radio" name="Créneau" value="Samedi et dimanche — 9h00">
+            <span><span class="d">Samedi &amp; Dimanche</span><span class="h">9h00</span><span class="t">WEEK-END</span></span>
+          </label>
+        </div>
+        <div class="field" style="margin-top:16px">
+          <label for="msg">Précisions (facultatif)</label>
+          <textarea id="msg" name="Précisions" placeholder="Objectif pour le stage, contrainte d'horaire, frère ou sœur à inscrire aussi…"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset style="margin-bottom:14px">
+        <legend>CONFIRMATION</legend>
+        <div class="check">
+          <input type="checkbox" id="ok" name="Accord paiement" value="Oui" required>
+          <label for="ok" style="margin:0">
+            J'ai noté que la participation est de 20 € pour tout le stage, à régler
+            via PayPal après réception du lien de confirmation. <span class="req">*</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- champs techniques FormSubmit -->
+      <input type="hidden" name="_autoresponse" value="Assalamu alaykum,
+
+Votre inscription au Stage Coran — Été 2026 est bien enregistrée. Merci !
+
+Rappel du stage :
+• Du 5 au 20 août, en ligne (Zoom ou Teams)
+• 2 séances de 20 minutes par semaine
+• Participation : 20 € pour l'ensemble du stage
+
+Pour valider définitivement la place, il reste le règlement :
+LIEN_PAYPAL_A_REMPLACER
+
+Le lien de connexion aux séances sera envoyé la veille du démarrage, le 4 août.
+
+Pour toute question, il suffit de répondre à ce message.
+
+Makaranta
+inscriptions@makaranta-edu.com
+https://makaranta-edu.com/">
+      <!-- Professeurs en copie : adresses séparées par une virgule.
+           Laisser vide (ou supprimer la ligne) pour ne recevoir que sur inscriptions@. -->
+      <input type="hidden" name="_cc" value="PROF1@makaranta-edu.com,PROF2@makaranta-edu.com">
+      <input type="hidden" name="_subject" value="Nouvelle inscription — Stage Été 2026">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+      <button type="submit" id="send">Envoyer mon inscription</button>
+      <div class="error" id="err"></div>
+    </form>
+
+    <div class="done" id="done">
+      <div class="tick">✦</div>
+      <h2>Inscription bien reçue</h2>
+      <p>Un e-mail de confirmation part vers l'adresse indiquée, avec le lien PayPal et le lien de connexion à la séance.</p>
+      <div class="next">
+        <p><b>La suite :</b> place réservée dès réception des 20 €. Le lien Zoom ou Teams est envoyé la veille du démarrage, le 4 août.</p>
+        <p style="margin-top:10px">Une question ? <a href="mailto:inscriptions@makaranta-edu.com" style="color:#e8b355">inscriptions@makaranta-edu.com</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <a class="back" href="https://makaranta-edu.com/">← Retour au site Makaranta</a>
+
+  <p class="foot">
+    Makaranta · <a href="https://makaranta-edu.com/">makaranta-edu.com</a><br>
+    Les informations transmises servent uniquement à gérer l'inscription au stage.
+  </p>
+</div>
+
+<script>
+  // ====== ENDPOINT : voir la note en haut du fichier ======
+  const ENDPOINT = "https://formsubmit.co/ajax/inscriptions@makaranta-edu.com";
+
+  const form = document.getElementById('f');
+  const btn  = document.getElementById('send');
+  const err  = document.getElementById('err');
+  const done = document.getElementById('done');
+
+  function fail(html){ err.innerHTML = html; err.style.display = 'block'; }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.style.display = 'none';
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (Number(document.getElementById('age').value) < 10) {
+      fail("Le stage accueille les élèves à partir de 10 ans.");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Envoi en cours…";
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+      if (!res.ok) throw new Error(res.status);
+      form.style.display = 'none';
+      done.style.display = 'block';
+      done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (e) {
+      btn.disabled = false;
+      btn.textContent = "Envoyer mon inscription";
+      fail('L\'envoi n\'a pas abouti. Écris directement à ' +
+           '<a href="mailto:inscriptions@makaranta-edu.com">inscriptions@makaranta-edu.com</a>, ' +
+           'la place sera réservée de la même façon.');
+    }
+  });
+</script>
+</body>
+</html>
